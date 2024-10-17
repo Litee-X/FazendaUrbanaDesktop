@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FazendaUrbanaDesktop", "FazendaUrbanaDesktop\FazendaUrbanaDesktop.csproj", "{BA0D4E35-1C4E-4B83-91C2-BB63457E8E3D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B732148F-5EC7-4426-9D01-F25409DFCCE8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Util", "Util\Util.csproj", "{60B1CD25-C592-478D-97B4-AAB8B272E434}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BA0D4E35-1C4E-4B83-91C2-BB63457E8E3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA0D4E35-1C4E-4B83-91C2-BB63457E8E3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA0D4E35-1C4E-4B83-91C2-BB63457E8E3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA0D4E35-1C4E-4B83-91C2-BB63457E8E3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60B1CD25-C592-478D-97B4-AAB8B272E434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60B1CD25-C592-478D-97B4-AAB8B272E434}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60B1CD25-C592-478D-97B4-AAB8B272E434}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60B1CD25-C592-478D-97B4-AAB8B272E434}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BA0D4E35-1C4E-4B83-91C2-BB63457E8E3D} = {B732148F-5EC7-4426-9D01-F25409DFCCE8}
+		{60B1CD25-C592-478D-97B4-AAB8B272E434} = {B732148F-5EC7-4426-9D01-F25409DFCCE8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F825B7B6-C6BE-411D-BCA7-6030819BEC2F}
+	EndGlobalSection
+EndGlobal
