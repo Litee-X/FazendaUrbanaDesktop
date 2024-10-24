@@ -29,18 +29,16 @@
         private void InitializeComponent()
         {
             gbLogin = new GroupBox();
-            lblUsuario = new Label();
-            lblSenha = new Label();
-            txtUsuario = new TextBox();
-            txtSenha = new TextBox();
             btnLogin = new Button();
-            btnSair = new Button();
+            txtSenha = new TextBox();
+            txtUsuario = new TextBox();
+            lblSenha = new Label();
+            lblUsuario = new Label();
             gbLogin.SuspendLayout();
             SuspendLayout();
             // 
             // gbLogin
             // 
-            gbLogin.Controls.Add(btnSair);
             gbLogin.Controls.Add(btnLogin);
             gbLogin.Controls.Add(txtSenha);
             gbLogin.Controls.Add(txtUsuario);
@@ -52,41 +50,6 @@
             gbLogin.TabIndex = 0;
             gbLogin.TabStop = false;
             // 
-            // lblUsuario
-            // 
-            lblUsuario.AutoSize = true;
-            lblUsuario.Location = new Point(33, 42);
-            lblUsuario.Name = "lblUsuario";
-            lblUsuario.Size = new Size(50, 15);
-            lblUsuario.TabIndex = 0;
-            lblUsuario.Text = "Usuário:";
-            // 
-            // lblSenha
-            // 
-            lblSenha.AutoSize = true;
-            lblSenha.Location = new Point(33, 75);
-            lblSenha.Name = "lblSenha";
-            lblSenha.Size = new Size(42, 15);
-            lblSenha.TabIndex = 1;
-            lblSenha.Text = "Senha:";
-            // 
-            // txtUsuario
-            // 
-            txtUsuario.Location = new Point(102, 34);
-            txtUsuario.MaxLength = 20;
-            txtUsuario.Name = "txtUsuario";
-            txtUsuario.Size = new Size(100, 23);
-            txtUsuario.TabIndex = 2;
-            // 
-            // txtSenha
-            // 
-            txtSenha.Location = new Point(102, 67);
-            txtSenha.MaxLength = 8;
-            txtSenha.Name = "txtSenha";
-            txtSenha.PasswordChar = '*';
-            txtSenha.Size = new Size(100, 23);
-            txtSenha.TabIndex = 3;
-            // 
             // btnLogin
             // 
             btnLogin.Location = new Point(33, 109);
@@ -97,24 +60,53 @@
             btnLogin.UseVisualStyleBackColor = true;
             btnLogin.Click += btnLogin_Click;
             // 
-            // btnSair
+            // txtSenha
             // 
-            btnSair.Location = new Point(177, 214);
-            btnSair.Name = "btnSair";
-            btnSair.Size = new Size(75, 23);
-            btnSair.TabIndex = 5;
-            btnSair.Text = "Sair";
-            btnSair.UseVisualStyleBackColor = true;
+            txtSenha.Location = new Point(102, 67);
+            txtSenha.MaxLength = 11;
+            txtSenha.Name = "txtSenha";
+            txtSenha.PasswordChar = '*';
+            txtSenha.Size = new Size(100, 23);
+            txtSenha.TabIndex = 3;
+            // 
+            // txtUsuario
+            // 
+            txtUsuario.Location = new Point(102, 34);
+            txtUsuario.MaxLength = 20;
+            txtUsuario.Name = "txtUsuario";
+            txtUsuario.Size = new Size(100, 23);
+            txtUsuario.TabIndex = 2;
+            // 
+            // lblSenha
+            // 
+            lblSenha.AutoSize = true;
+            lblSenha.Location = new Point(33, 75);
+            lblSenha.Name = "lblSenha";
+            lblSenha.Size = new Size(42, 15);
+            lblSenha.TabIndex = 1;
+            lblSenha.Text = "Senha:";
+            // 
+            // lblUsuario
+            // 
+            lblUsuario.AutoSize = true;
+            lblUsuario.Location = new Point(33, 42);
+            lblUsuario.Name = "lblUsuario";
+            lblUsuario.Size = new Size(50, 15);
+            lblUsuario.TabIndex = 0;
+            lblUsuario.Text = "Usuário:";
             // 
             // frmLogin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(338, 312);
-            ControlBox = false;
             Controls.Add(gbLogin);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "frmLogin";
+            ShowIcon = false;
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "frmLogin";
             gbLogin.ResumeLayout(false);
             gbLogin.PerformLayout();
@@ -124,7 +116,6 @@
         #endregion
 
         private GroupBox gbLogin;
-        private Button btnSair;
         private Button btnLogin;
         private TextBox txtSenha;
         private TextBox txtUsuario;

@@ -1,133 +1,137 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FazendaUrbanaDesktop.ModuloFuncionarios;
-using MySql.Data.MySqlClient;
-using Mysqlx.Crud;
+using System.Data;
+using System.Data.SqlClient;
+using System.Windows.Forms;
+using Util.BD;
 
 namespace FazendaUrbanaDesktop.ModuloCliente
 {
-    internal class gerenciarCliente
+    internal class GerenciarCliente
     {
-        private int id;
-        private string nome;
-        private string cpf;
-        private string email;
-        private string endereco;
+        public string Nome { get; set; }
+        public string Email { get; set; }
+        public string Cnpj { get; set; }
+        public int Id { get; set; }
+        public string Endereco { get; set; } // Adicionando a propriedade Endereco
 
-        public int Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
-        public string Nome
-        {
-            get { return nome; }
-            set { nome = value; }
-        }
-        public string Email
-        {
-            get { return email; }
-            set { email = value; }
-        }
-        public string Cpf
-        {
-            get { return cpf; }
-            set { cpf = value; }
-        }
-        public string Endereco
-        {
-            get { return endereco; }
-            set { endereco = value; }
-        }
-
-        public bool cadastrarCliente()
+        public bool CadastrarCliente(ConexaoBanco factory)
         {
             try
             {
-                MySqlConnection MysqlConexaoBanco = new MySqlConnection(ConexaoBanco.bancoServidor);
-                MysqlConexaoBanco.Open();
+                using (SqlConnection sqlConexaoBanco = factory.ObterConexao())
+                {
+                    sqlConexaoBanco.Open();
+                    string insert = "INSERT INTO Cliente (nome, email, cnpj, endereco) VALUES (@nome, @email, @cnpj, @endereco)";
 
-                string insert = $"insert into cliente (nome,email,cpf,endereco) values ('{Nome}', '{Email}','{Cpf}','{Endereco}')";
+                    SqlCommand comandoSql = new SqlCommand(insert, sqlConexaoBanco);
+                    comandoSql.Parameters.AddWithValue("@nome", Nome);
+                    comandoSql.Parameters.AddWithValue("@email", Email);
+                    comandoSql.Parameters.AddWithValue("@cnpj", Cnpj);
+                    comandoSql.Parameters.AddWithValue("@endereco", Endereco); // Adicionando o parâmetro para o endereço
 
-                MySqlCommand comandoSql = MysqlConexaoBanco.CreateCommand();
-                comandoSql.CommandText = insert;
-
-                comandoSql.ExecuteNonQuery();
-                return true;
+                    comandoSql.ExecuteNonQuery();
+                    return true;
+                }
             }
             catch (Exception ex)
             {
-                //mensagem de erro do banco de dados quando não for possível cadastrar usuários ou funcionários no banco
-                //erro ligado ao banco de dados.
-                MessageBox.Show("Erro no banco de dados - método cadastrarCliente: " + ex.Message);
+                MessageBox.Show("Erro no banco de dados - método CadastrarCliente: " + ex.Message);
                 return false;
             }
         }
 
-        public MySqlDataReader localizarCliente()
+        public SqlDataReader LocalizarCliente(ConexaoBanco factory)
         {
+            SqlDataReader reader = null;
             try
             {
-                MySqlConnection MysqlConexaoBanco = new MySqlConnection(ConexaoBanco.bancoServidor);
-                MysqlConexaoBanco.Open();
+                using (SqlConnection sqlConexaoBanco = factory.ObterConexao())
+                {
+                    sqlConexaoBanco.Open();
+                    string select = "SELECT id, nome, email, cnpj, endereco FROM Cliente WHERE cnpj = @cnpj"; // Incluindo o endereço na seleção
+                    SqlCommand comandoSql = new SqlCommand(select, sqlConexaoBanco);
+                    comandoSql.Parameters.AddWithValue("@cnpj", Cnpj);
 
-                string select = $"select id, nome, email, cpf, endereco from cliente where cpf = '{Cpf}';";
-                MySqlCommand comandoSql = MysqlConexaoBanco.CreateCommand();
-                comandoSql.CommandText = select;
-
-                MySqlDataReader reader = comandoSql.ExecuteReader();
-                return reader;
+                    reader = comandoSql.ExecuteReader(); // Retorna o SqlDataReader para o método chamar
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro no banco de dados - método localizarCliente: " + ex.Message);
-                return null;
+                MessageBox.Show("Erro no banco de dados - método LocalizarCliente: " + ex.Message);
             }
+            return reader;
         }
 
-        public bool atualizarCliente()
+        public bool AtualizarCliente(ConexaoBanco factory)
         {
             try
             {
-                MySqlConnection MysqlConexaoBanco = new MySqlConnection(ConexaoBanco.bancoServidor);
-                MysqlConexaoBanco.Open();
+                using (SqlConnection sqlConexaoBanco = factory.ObterConexao())
+                {
+                    sqlConexaoBanco.Open();
+                    string update = "UPDATE Cliente SET nome = @nome, email = @email, endereco = @endereco WHERE cnpj = @cnpj"; // Incluindo o endereço na atualização
 
-                string uptade = $"update cliente set email = '{Email}', endereco = '{Endereco}' where id = '{Id}';";
-                MySqlCommand comandoSql = MysqlConexaoBanco.CreateCommand();
-                comandoSql.CommandText = uptade;
+                    SqlCommand comandoSql = new SqlCommand(update, sqlConexaoBanco);
+                    comandoSql.Parameters.AddWithValue("@nome", Nome);
+                    comandoSql.Parameters.AddWithValue("@email", Email);
+                    comandoSql.Parameters.AddWithValue("@cnpj", Cnpj);
+                    comandoSql.Parameters.AddWithValue("@endereco", Endereco); // Adicionando o parâmetro para o endereço
 
-                comandoSql.ExecuteNonQuery();
-                return true;
+                    return comandoSql.ExecuteNonQuery() > 0; // Retorna true se a atualização foi bem-sucedida
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro no banco de dados - método atualizarCliente: " + ex.Message);
+                MessageBox.Show("Erro no banco de dados - método AtualizarCliente: " + ex.Message);
                 return false;
             }
         }
 
-        public bool deletarCliente()
+        public bool DeletarCliente(ConexaoBanco factory)
         {
             try
             {
-                MySqlConnection MysqlConexaoBanco = new MySqlConnection(ConexaoBanco.bancoServidor);
-                MysqlConexaoBanco.Open();
+                using (SqlConnection sqlConexaoBanco = factory.ObterConexao())
+                {
+                    sqlConexaoBanco.Open();
+                    string delete = "DELETE FROM Cliente WHERE cnpj = @cnpj";
 
-                string delete = $"delete from cliente where id = '{Id}';";
-                MySqlCommand comandoSql = MysqlConexaoBanco.CreateCommand();
-                comandoSql.CommandText = delete;
+                    SqlCommand comandoSql = new SqlCommand(delete, sqlConexaoBanco);
+                    comandoSql.Parameters.AddWithValue("@cnpj", Cnpj);
 
-                comandoSql.ExecuteNonQuery();
-                return true;
+                    return comandoSql.ExecuteNonQuery() > 0; // Retorna true se a exclusão foi bem-sucedida
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro banco de dados - método deletarCliente " + ex.Message);
+                MessageBox.Show("Erro no banco de dados - método DeletarCliente: " + ex.Message);
                 return false;
             }
+        }
+
+        // Novo método para obter todos os clientes
+        public DataTable ObterTodosClientes(ConexaoBanco factory)
+        {
+            DataTable tabelaClientes = new DataTable();
+
+            try
+            {
+                using (SqlConnection sqlConexaoBanco = factory.ObterConexao())
+                {
+                    sqlConexaoBanco.Open();
+                    string select = "SELECT id, nome, email, cnpj, endereco FROM Cliente"; // Incluindo o endereço na seleção
+                    SqlCommand comandoSql = new SqlCommand(select, sqlConexaoBanco);
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(comandoSql);
+                    adapter.Fill(tabelaClientes);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao obter clientes: " + ex.Message);
+            }
+
+            return tabelaClientes;
         }
     }
 }

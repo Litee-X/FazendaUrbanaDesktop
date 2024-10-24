@@ -1,14 +1,12 @@
-﻿using MySql.Data.MySqlClient;
-using Mysqlx.Crud;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using System.Data;
+using System.Data.SqlClient;
+using System.Windows.Forms;
+using Util.BD;
 
 namespace FazendaUrbanaDesktop.ModuloFuncionarios
 {
-    internal class cadastroFuncionarios
+    internal class CadastroFuncionarios
     {
         private int id;
         private string nome;
@@ -42,92 +40,161 @@ namespace FazendaUrbanaDesktop.ModuloFuncionarios
             set { endereco = value; }
         }
 
-
-        //método para cadastrar funcionario no banco de dados
-        public bool cadastrarFuncionarios()
+        // Método para cadastrar funcionário no banco de dados
+        public bool CadastrarFuncionarios(ConexaoBanco factory)
         {
             try
             {
-                MySqlConnection MysqlConexaoBanco = new MySqlConnection(ConexaoBanco.bancoServidor);
-                MysqlConexaoBanco.Open();
+                using (SqlConnection sqlConnection = factory.ObterConexao())
+                {
+                    sqlConnection.Open();
 
-                string insert = $"insert into funcionarios (nome,email,cpf,endereco) values ('{Nome}', '{Email}','{Cpf}','{Endereco}')";
+                    string insert = "INSERT INTO funcionarios (nome, email, cpf, endereco) VALUES (@Nome, @Email, @Cpf, @Endereco)";
+                    using (SqlCommand comandoSql = new SqlCommand(insert, sqlConnection))
+                    {
+                        comandoSql.Parameters.AddWithValue("@Nome", Nome);
+                        comandoSql.Parameters.AddWithValue("@Email", Email);
+                        comandoSql.Parameters.AddWithValue("@Cpf", Cpf);
+                        comandoSql.Parameters.AddWithValue("@Endereco", Endereco);
 
-                MySqlCommand comandoSql = MysqlConexaoBanco.CreateCommand();
-                comandoSql.CommandText = insert;
-
-                comandoSql.ExecuteNonQuery();
+                        comandoSql.ExecuteNonQuery();
+                    }
+                }
                 return true;
             }
             catch (Exception ex)
             {
-                //mensagem de erro do banco de dados quando não for possível cadastrar usuários ou funcionários no banco
-                //erro ligado ao banco de dados.
-                MessageBox.Show("Erro no banco de dados - método cadastrarFuncionario: " + ex.Message);
+                MessageBox.Show("Erro no banco de dados - método CadastrarFuncionarios: " + ex.Message);
                 return false;
             }
         }
 
-        public MySqlDataReader localizarFuncionario()
+        // Método para verificar se o CPF já está cadastrado
+        public bool CpfJaCadastrado(ConexaoBanco factory)
         {
             try
             {
-                MySqlConnection MysqlConexaoBanco = new MySqlConnection(ConexaoBanco.bancoServidor);
-                MysqlConexaoBanco.Open();
+                using (SqlConnection sqlConnection = factory.ObterConexao())
+                {
+                    sqlConnection.Open();
 
-                string select = $"select id, nome, email, cpf, endereco from funcionarios where cpf = '{Cpf}';";
-                MySqlCommand comandoSql = MysqlConexaoBanco.CreateCommand();
-                comandoSql.CommandText = select;
-
-                MySqlDataReader reader = comandoSql.ExecuteReader();
-                return reader;
+                    string select = "SELECT COUNT(*) FROM funcionarios WHERE cpf = @Cpf";
+                    using (SqlCommand comandoSql = new SqlCommand(select, sqlConnection))
+                    {
+                        comandoSql.Parameters.AddWithValue("@Cpf", Cpf);
+                        int count = (int)comandoSql.ExecuteScalar();
+                        return count > 0; // Retorna true se o CPF já está cadastrado
+                    }
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro no banco de dados - método localizarFuncionario: " + ex.Message);
+                MessageBox.Show("Erro ao verificar CPF no banco de dados: " + ex.Message);
+                return false;
+            }
+        }
+
+        // Método para localizar funcionário pelo CPF
+        public DataRow LocalizarFuncionarioPorCpf(ConexaoBanco factory)
+        {
+            try
+            {
+                using (SqlConnection sqlConnection = factory.ObterConexao())
+                {
+                    sqlConnection.Open();
+
+                    string select = "SELECT id, nome, email, cpf, endereco FROM funcionarios WHERE cpf = @Cpf";
+                    using (SqlCommand comandoSql = new SqlCommand(select, sqlConnection))
+                    {
+                        comandoSql.Parameters.AddWithValue("@Cpf", Cpf);
+                        using (SqlDataReader reader = comandoSql.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                DataTable dataTable = new DataTable();
+                                dataTable.Load(reader);
+                                return dataTable.Rows[0]; // Retorna a primeira linha encontrada
+                            }
+                        }
+                    }
+                }
+                return null; // Nenhum funcionário encontrado
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro no banco de dados - método LocalizarFuncionarioPorCpf: " + ex.Message);
                 return null;
             }
         }
 
-        public bool atualizarFuncionario()
+        // Método para atualizar funcionário pelo CPF
+        public bool AtualizarFuncionarioPorCpf(ConexaoBanco factory)
         {
             try
             {
-                MySqlConnection MysqlConexaoBanco = new MySqlConnection(ConexaoBanco.bancoServidor);
-                MysqlConexaoBanco.Open();
+                using (SqlConnection sqlConnection = factory.ObterConexao())
+                {
+                    sqlConnection.Open();
 
-                string uptade = $"update funcionarios set email = '{Email}', endereco = '{Endereco}' where id = '{Id}';";
-                MySqlCommand comandoSql = MysqlConexaoBanco.CreateCommand();
-                comandoSql.CommandText = uptade;
+                    string update = "UPDATE funcionarios SET nome = @Nome, email = @Email, endereco = @Endereco WHERE cpf = @Cpf";
+                    using (SqlCommand comandoSql = new SqlCommand(update, sqlConnection))
+                    {
+                        comandoSql.Parameters.AddWithValue("@Nome", Nome);
+                        comandoSql.Parameters.AddWithValue("@Email", Email);
+                        comandoSql.Parameters.AddWithValue("@Endereco", Endereco);
+                        comandoSql.Parameters.AddWithValue("@Cpf", Cpf);
 
-                comandoSql.ExecuteNonQuery();
+                        comandoSql.ExecuteNonQuery();
+                    }
+                }
                 return true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro no banco de dados - método atualizarFuncionario: " + ex.Message);
+                MessageBox.Show("Erro no banco de dados - método AtualizarFuncionarioPorCpf: " + ex.Message);
                 return false;
             }
         }
 
-        public bool deletarFuncionario()
+        // Método para deletar funcionário pelo CPF
+        public bool DeletarFuncionarioPorCpf(ConexaoBanco factory)
         {
             try
             {
-                MySqlConnection MysqlConexaoBanco = new MySqlConnection(ConexaoBanco.bancoServidor);
-                MysqlConexaoBanco.Open();
+                using (SqlConnection sqlConnection = factory.ObterConexao())
+                {
+                    sqlConnection.Open();
 
-                string delete = $"delete from funcionarios where id = '{Id}';";
-                MySqlCommand comandoSql = MysqlConexaoBanco.CreateCommand();
-                comandoSql.CommandText = delete;
-
-                comandoSql.ExecuteNonQuery();
+                    string delete = "DELETE FROM funcionarios WHERE cpf = @Cpf";
+                    using (SqlCommand comandoSql = new SqlCommand(delete, sqlConnection))
+                    {
+                        comandoSql.Parameters.AddWithValue("@Cpf", Cpf);
+                        comandoSql.ExecuteNonQuery();
+                    }
+                }
                 return true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro banco de dados - método deletarFuncionario " + ex.Message);
+                MessageBox.Show("Erro no banco de dados - método DeletarFuncionarioPorCpf: " + ex.Message);
                 return false;
+            }
+        }
+
+        // Método para obter todos os funcionários
+        public DataTable ObterTodosFuncionarios(ConexaoBanco factory)
+        {
+            using (var connection = factory.ObterConexao())
+            {
+                using (var command = new SqlCommand("SELECT id, nome, email, cpf, endereco FROM funcionarios", connection))
+                {
+                    using (var adapter = new SqlDataAdapter(command))
+                    {
+                        var dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+                        return dataTable;
+                    }
+                }
             }
         }
     }
