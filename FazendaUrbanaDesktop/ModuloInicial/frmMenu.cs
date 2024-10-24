@@ -1,29 +1,53 @@
 ﻿using FazendaUrbanaDesktop.ModuloCliente;
 using FazendaUrbanaDesktop.ModuloFuncionarios;
-//using FazendaUrbanaDesktop.ModuloUsuario;
-//using Repository.Interface;
+using FazendaUrbanaDesktop.ModuloProduto;
+using FazendaUrbanaDesktop.ModuloUsuario; 
 using Util.BD;
+using System.Windows.Forms;
 
 namespace FazendaUrbanaDesktop.ModuloInicial
 {
     public partial class frmMenu : Form
     {
-        private readonly ConexaoBancoBD _factory;
-        //private readonly IClienteRepository _clienteRepository;
-        //private readonly IUsuarioRepository _usuarioRepository;
-        public frmMenu(ConexaoBancoBD factory)
+        private readonly ConexaoBanco _factory;
+
+        public frmMenu(ConexaoBanco factory)
         {
             InitializeComponent();
             _factory = factory;
         }
 
-        private void gerenciarToolStripMenuItem_Click(object sender, EventArgs e)
+        private void gerenciarToolStripMenuItem3_Click(object sender, EventArgs e)
         {
             try
             {
-                frmGerenciarCliente frmGerenciarCliente = new frmGerenciarCliente();
+                frmFuncionarios frmFuncionarios = new frmFuncionarios(_factory);
+                frmFuncionarios.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro: " + ex.Message);
+            }
+        }
 
-                // Exibe o formulário
+        private void gerenciarToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                frmGerenciarProduto frmGerenciarProduto = new frmGerenciarProduto(_factory);
+                frmGerenciarProduto.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro: " + ex.Message);
+            }
+        }
+
+        private void gerenciarToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                frmGerenciarCliente frmGerenciarCliente = new frmGerenciarCliente(_factory);
                 frmGerenciarCliente.Show();
             }
             catch (Exception ex)
@@ -32,12 +56,20 @@ namespace FazendaUrbanaDesktop.ModuloInicial
             }
         }
 
-        private void gerenciarToolStripMenuItem3_Click(object sender, EventArgs e)
+        private void gerenciarToolStripMenuItem4_Click(object sender, EventArgs e)
         {
-            frmFuncionarios frmFuncionarios = new frmFuncionarios();
+            try
+            {
+                // Cria uma nova instância do formulário de cadastro de usuário
+                frmCadastroUsuario frmCadastroUsuario = new frmCadastroUsuario(_factory);
 
-            // Exibe o formulário
-            frmFuncionarios.Show();
+                // Exibe o formulário
+                frmCadastroUsuario.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro: " + ex.Message);
+            }
         }
     }
 }

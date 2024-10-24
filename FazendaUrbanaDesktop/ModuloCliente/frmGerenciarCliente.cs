@@ -1,13 +1,6 @@
-﻿using FazendaUrbanaDesktop.ModuloFuncionarios;
-using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.SqlClient;
 using System.Windows.Forms;
 using Util.BD;
 
@@ -15,69 +8,94 @@ namespace FazendaUrbanaDesktop.ModuloCliente
 {
     public partial class frmGerenciarCliente : Form
     {
-        public frmGerenciarCliente(ConexaoBancoBD _factory)
+        private readonly ConexaoBanco _factory;
+
+        public frmGerenciarCliente(ConexaoBanco factory)
         {
             InitializeComponent();
+            _factory = factory;
+            CarregarClientes(); // Carrega os clientes ao inicializar o formulário
         }
 
-        private void LoadData()
+        private void frmGerenciarCliente_Load(object sender, EventArgs e)
         {
-            string connectionString = "Server=localhost;Database=dbFuncionarios;User Id=root;Password=Hyago04102002@;";
-            string query = "SELECT * FROM cliente"; // Modifique para a tabela que deseja exibir
-
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
-                try
-                {
-                    connection.Open();
-                    MySqlDataAdapter adapter = new MySqlDataAdapter(query, connection);
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-
-                    // Carregando os dados no DataGridView
-                    dgGerenciarCliente.DataSource = dataTable;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Erro ao carregar dados: " + ex.Message);
-                }
-            }
+            // Configurações do DataGridView
+            dgGerenciarCliente.ReadOnly = true; // Define o DataGridView como somente leitura
+            dgGerenciarCliente.AllowUserToAddRows = false; // Impede a adição de novas linhas
+            dgGerenciarCliente.AllowUserToDeleteRows = false; // Impede a exclusão de linhas
+            dgGerenciarCliente.SelectionMode = DataGridViewSelectionMode.FullRowSelect; // Seleciona a linha inteira
+            dgGerenciarCliente.MultiSelect = false; // Desabilita a seleção de múltiplas linhas
+            dgGerenciarCliente.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill; // Preenche todo o espaço disponível
         }
 
-        private void btnCadastrar_Click(object sender, EventArgs e)
+        // Função para carregar todos os clientes
+        private void CarregarClientes()
         {
             try
             {
-                if (!txtNome.Text.Equals("") && !txtEmail.Text.Equals("") && !mskCpf.Text.Equals("") && !txtEndereco.Text.Equals(""))
-                {
-                    gerenciarCliente cadCliente = new gerenciarCliente();
-                    cadCliente.Nome = txtNome.Text;
-                    cadCliente.Email = txtEmail.Text;
-                    cadCliente.Cpf = mskCpf.Text;
-                    cadCliente.Endereco = txtEndereco.Text;
+                var gerenciarClientes = new GerenciarCliente();
+                DataTable tabelaClientes = gerenciarClientes.ObterTodosClientes(_factory);
+                dgGerenciarCliente.DataSource = tabelaClientes; // Preenche o DataGridView com os clientes
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao carregar clientes: " + ex.Message);
+            }
+        }
 
-                    if (cadCliente.cadastrarCliente())
+        // Função para carregar a seleção da linha no DataGridView para os campos
+        private void dgGerenciarCliente_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0) // Verifica se a linha clicada é válida
+            {
+                var row = dgGerenciarCliente.Rows[e.RowIndex];
+                PreencherCampos(row); // Preenche os campos com os dados da linha selecionada
+            }
+        }
+
+        // Função para preencher os campos de texto com os dados da linha selecionada
+        private void PreencherCampos(DataGridViewRow row)
+        {
+            lblId.Text = row.Cells["id"].Value.ToString();
+            txtNome.Text = row.Cells["nome"].Value.ToString();
+            txtEmail.Text = row.Cells["email"].Value.ToString();
+            mskCnpj.Text = row.Cells["cnpj"].Value.ToString();
+            txtEndereco.Text = row.Cells["endereco"].Value.ToString(); // Preenchendo o endereço
+        }
+
+        // Botão de cadastrar cliente
+        private void btnCadastrar_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(txtNome.Text) &&
+                    !string.IsNullOrWhiteSpace(txtEmail.Text) &&
+                    !string.IsNullOrWhiteSpace(mskCnpj.Text) &&
+                    !string.IsNullOrWhiteSpace(txtEndereco.Text)) // Verificando endereço
+                {
+                    var cadCliente = new GerenciarCliente
                     {
-                        MessageBox.Show($"O cliente {cadCliente.Nome} foi cadastradado com sucesso!");
-                        txtNome.Clear();
-                        txtEmail.Clear();
-                        mskCpf.Clear();
-                        txtEndereco.Clear();
-                        txtNome.Focus();
+                        Nome = txtNome.Text,
+                        Email = txtEmail.Text,
+                        Cnpj = mskCnpj.Text,
+                        Endereco = txtEndereco.Text // Adicionando endereço
+                    };
+
+                    // Chama o método para cadastrar
+                    if (cadCliente.CadastrarCliente(_factory))
+                    {
+                        MessageBox.Show($"O cliente {cadCliente.Nome} foi cadastrado com sucesso!");
+                        LimparCampos(); // Limpa os campos após cadastrar
+                        CarregarClientes(); // Recarrega a lista de clientes
                     }
                     else
                     {
-                        MessageBox.Show("Não foi possível cadastrar cliente!");
+                        MessageBox.Show("Não foi possível cadastrar o cliente!");
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Favor preencher todos os campos corretamentes!");
-                    txtNome.Clear();
-                    txtEmail.Clear();
-                    mskCpf.Clear();
-                    txtEndereco.Clear();
-                    txtNome.Focus();
+                    MessageBox.Show("Favor preencher todos os campos corretamente!");
                 }
             }
             catch (Exception ex)
@@ -86,164 +104,79 @@ namespace FazendaUrbanaDesktop.ModuloCliente
             }
         }
 
-        private void bntPesquisar_Click(object sender, EventArgs e)
+        // Botão de atualizar cliente
+        private void btnAlterar_Click(object sender, EventArgs e)
         {
             try
             {
-                if (!mskCpf.Text.Equals(""))
+                if (!string.IsNullOrWhiteSpace(mskCnpj.Text) &&
+                    !string.IsNullOrWhiteSpace(txtEmail.Text) &&
+                    !string.IsNullOrWhiteSpace(txtNome.Text) &&
+                    !string.IsNullOrWhiteSpace(txtEndereco.Text)) // Verificando endereço
                 {
-                    gerenciarCliente cadCliente = new gerenciarCliente();
-                    cadCliente.Cpf = mskCpf.Text;
-
-                    MySqlDataReader reader = cadCliente.localizarCliente();
-
-                    if (reader != null)
+                    var clienteAtualizar = new GerenciarCliente
                     {
-                        if (reader.HasRows)
-                        {
-                            reader.Read();
+                        Id = int.Parse(lblId.Text),
+                        Nome = txtNome.Text,
+                        Email = txtEmail.Text,
+                        Cnpj = mskCnpj.Text,
+                        Endereco = txtEndereco.Text // Atualizando endereço
+                    };
 
-                            lblId.Text = reader["id"].ToString();
-                            txtNome.Text = reader["nome"].ToString();
-                            txtEmail.Text = reader["email"].ToString();
-                            txtEndereco.Text = reader["endereco"].ToString();
-
-                        }
-                        else
-                        {
-                            MessageBox.Show("Cliente não encontrado");
-                            mskCpf.Clear();
-                            txtEmail.Clear();
-                            txtNome.Clear();
-                            txtEndereco.Clear();
-                            mskCpf.Focus();
-                            lblId.Text = "";
-                        }
-                    }
-                    else
+                    // Chama o método de atualização
+                    if (clienteAtualizar.AtualizarCliente(_factory))
                     {
-                        MessageBox.Show("Cliente não encontrado");
-                        mskCpf.Clear();
-                        txtEmail.Clear();
-                        txtNome.Clear();
-                        txtEndereco.Clear();
-                        mskCpf.Focus();
-                        lblId.Text = "";
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Favor preencher o campo CPF, para realizar a pesquisa!");
-                    mskCpf.Clear();
-                    txtEmail.Clear();
-                    txtNome.Clear();
-                    txtEndereco.Clear();
-                    mskCpf.Focus();
-                    lblId.Text = "";
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erro ao encontrar o cliente: " + ex.Message);
-            }
-        }
-
-        private void btnLimpar_Click(object sender, EventArgs e)
-        {
-            mskCpf.Clear();
-            txtEmail.Clear();
-            txtNome.Clear();
-            txtEndereco.Clear();
-            lblId.Text = "";
-        }
-
-        private void btnAtualizar_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (!mskCpf.Text.Equals("") && !txtEmail.Text.Equals("") && !txtNome.Text.Equals("") && !txtEndereco.Text.Equals(""))
-                {
-                    gerenciarCliente cadCliente = new gerenciarCliente();
-                    cadCliente.Id = int.Parse(lblId.Text);
-                    cadCliente.Email = txtEmail.Text;
-                    cadCliente.Endereco = txtEndereco.Text;
-
-                    if (cadCliente.atualizarCliente())
-                    {
-                        MessageBox.Show("Os dados do cliente foram atualizadas com sucesso!");
-                        mskCpf.Clear();
-                        txtEmail.Clear();
-                        txtNome.Clear();
-                        txtEndereco.Clear();
-                        mskCpf.Focus();
-                        lblId.Text = "";
+                        MessageBox.Show("Os dados do cliente foram atualizados com sucesso!");
+                        LimparCampos(); // Limpa os campos após atualizar
+                        CarregarClientes(); // Recarrega a lista de clientes
                     }
                     else
                     {
                         MessageBox.Show("Não foi possível atualizar as informações do cliente");
-                        mskCpf.Clear();
-                        txtEmail.Clear();
-                        txtNome.Clear();
-                        txtEndereco.Clear();
-                        mskCpf.Focus();
-                        lblId.Text = "";
                     }
                 }
                 else
                 {
                     MessageBox.Show("Favor localizar o cliente que deseja atualizar as informações");
-                    mskCpf.Clear();
-                    txtEmail.Clear();
-                    txtNome.Clear();
-                    txtEndereco.Clear();
-                    mskCpf.Focus();
-                    lblId.Text = "";
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao atualizar dados do cliente: " + ex.Message);
-
             }
         }
 
-        private void btnDeletar_Click(object sender, EventArgs e)
+        // Botão de deletar cliente
+        private void btnDeletar_Click_1(object sender, EventArgs e)
         {
             try
             {
-                if (!mskCpf.Text.Equals("") && !txtEmail.Text.Equals("") && !txtEndereco.Text.Equals("") && !txtNome.Text.Equals(""))
+                if (dgGerenciarCliente.SelectedRows.Count > 0) // Verifica se há uma linha selecionada
                 {
-                    gerenciarCliente cadCliente = new gerenciarCliente();
-                    cadCliente.Id = int.Parse(lblId.Text);
-                    if (cadCliente.deletarCliente())
-                    {
-                        MessageBox.Show("O cliente foi excluido com sucesso!");
-                        mskCpf.Clear();
-                        txtEmail.Clear();
-                        txtNome.Clear();
-                        txtEndereco.Clear();
-                        lblId.Text = "";
-                    }
+                    // Obtém o CNPJ do cliente selecionado
+                    var linha = dgGerenciarCliente.SelectedRows[0];
+                    string cnpj = linha.Cells["cnpj"].Value.ToString(); // Captura o CNPJ do cliente
 
+                    var clienteDeletar = new GerenciarCliente
+                    {
+                        Cnpj = cnpj // Usar CNPJ para deletar
+                    };
+
+                    // Chama o método de exclusão
+                    if (clienteDeletar.DeletarCliente(_factory))
+                    {
+                        MessageBox.Show("O cliente foi excluído com sucesso!");
+                        LimparCampos(); // Limpa os campos após deletar
+                        CarregarClientes(); // Recarrega a lista de clientes
+                    }
                     else
                     {
                         MessageBox.Show("Não foi possível excluir o cliente");
-                        mskCpf.Clear();
-                        txtEmail.Clear();
-                        txtNome.Clear();
-                        txtEndereco.Clear();
-                        lblId.Text = "";
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Favor pesquisar qual cliente deseja excluir");
-                    mskCpf.Clear();
-                    txtEmail.Clear();
-                    txtNome.Clear();
-                    txtEndereco.Clear();
-                    mskCpf.Focus();
-                    lblId.Text = "";
+                    MessageBox.Show("Selecione um cliente para excluir.");
                 }
             }
             catch (Exception ex)
@@ -251,8 +184,59 @@ namespace FazendaUrbanaDesktop.ModuloCliente
                 MessageBox.Show("Erro ao excluir cliente: " + ex.Message);
             }
         }
+
+        // Função para limpar os campos de texto
+        private void LimparCampos()
+        {
+            mskCnpj.Clear();
+            txtEmail.Clear();
+            txtNome.Clear();
+            txtEndereco.Clear(); // Limpando o campo de endereço
+            lblId.Text = "";
+            mskCnpj.Focus();
+        }
+
+        // Botão de pesquisar cliente
+        private void btnPesquisar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(mskCnpj.Text) || !string.IsNullOrWhiteSpace(txtNome.Text)) // Permitir pesquisa por CNPJ ou Nome
+                {
+                    var cliente = new GerenciarCliente
+                    {
+                        Cnpj = mskCnpj.Text,
+                        Nome = txtNome.Text // Permitindo pesquisa por nome
+                    };
+
+                    // Chama o método de localização
+                    using (SqlDataReader reader = cliente.LocalizarCliente(_factory))
+                    {
+                        if (reader != null && reader.HasRows)
+                        {
+                            reader.Read();
+                            lblId.Text = reader["id"].ToString();
+                            txtNome.Text = reader["nome"].ToString();
+                            txtEmail.Text = reader["email"].ToString();
+                            mskCnpj.Text = reader["cnpj"].ToString();
+                            txtEndereco.Text = reader["endereco"].ToString(); // Preenchendo o endereço
+                        }
+                        else
+                        {
+                            MessageBox.Show("Cliente não encontrado");
+                            LimparCampos(); // Limpa os campos caso não encontre o cliente
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Favor preencher pelo menos um campo (CNPJ ou Nome) para realizar a pesquisa!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao encontrar o cliente: " + ex.Message);
+            }
+        }
     }
 }
-    
-
-

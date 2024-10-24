@@ -1,22 +1,16 @@
-﻿using FazendaUrbanaDesktop.ModuloCliente;
-using FazendaUrbanaDesktop.ModuloInicial;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using Util.BD;
 
-namespace FazendaUrbanaDesktop.Start
+public static class ServiceProviderBuilder
 {
-    public static class ServiceProviderBuilder
+    public static IServiceProvider Build(IConfiguration configuration)
     {
-        public static ServiceProvider Build()
-        {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<frmGerenciarCliente>();
-            serviceCollection.AddTransient<frmMenu>();
-            serviceCollection.AddTransient<frmLogin>();
-            serviceCollection.AddScoped<ConexaoBancoBD>();
+        var services = new ServiceCollection();
 
-            return serviceCollection.BuildServiceProvider();
-        }
+        // Registre suas dependências aqui
+        // Por exemplo, se você tiver uma classe de conexão com o banco
+        // services.AddSingleton<ConexaoBanco>(new ConexaoBanco(configuration.GetConnectionString("DefaultConnection")));
+
+        return services.BuildServiceProvider();
     }
 }

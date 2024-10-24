@@ -35,7 +35,6 @@ namespace FazendaUrbanaDesktop
             lblEndereco = new Label();
             txtNome = new TextBox();
             txtEmail = new TextBox();
-            txtCpf = new TextBox();
             txtEndereco = new TextBox();
             btnCadastrar = new Button();
             btnPesquisar = new Button();
@@ -44,8 +43,9 @@ namespace FazendaUrbanaDesktop
             btnLimpar = new Button();
             btnAtualizar = new Button();
             btnDeletar = new Button();
-            dataGridView1 = new DataGridView();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            dgCadastrarFuncionario = new DataGridView();
+            mskCpf = new MaskedTextBox();
+            ((System.ComponentModel.ISupportInitialize)dgCadastrarFuncionario).BeginInit();
             SuspendLayout();
             // 
             // lblNome
@@ -106,15 +106,6 @@ namespace FazendaUrbanaDesktop
             txtEmail.Size = new Size(486, 26);
             txtEmail.TabIndex = 2;
             // 
-            // txtCpf
-            // 
-            txtCpf.Font = new Font("Arial", 12F);
-            txtCpf.Location = new Point(132, 123);
-            txtCpf.MaxLength = 11;
-            txtCpf.Name = "txtCpf";
-            txtCpf.Size = new Size(142, 26);
-            txtCpf.TabIndex = 3;
-            // 
             // txtEndereco
             // 
             txtEndereco.Font = new Font("Arial", 12F);
@@ -146,7 +137,6 @@ namespace FazendaUrbanaDesktop
             btnPesquisar.TabIndex = 6;
             btnPesquisar.Text = "Pesquisar";
             btnPesquisar.UseVisualStyleBackColor = true;
-            btnPesquisar.Click += bntPesquisar_Click;
             // 
             // lblFuncionarioid
             // 
@@ -177,7 +167,6 @@ namespace FazendaUrbanaDesktop
             btnLimpar.TabIndex = 9;
             btnLimpar.Text = "Limpar";
             btnLimpar.UseVisualStyleBackColor = true;
-            btnLimpar.Click += btnLimpar_Click;
             // 
             // btnAtualizar
             // 
@@ -186,7 +175,7 @@ namespace FazendaUrbanaDesktop
             btnAtualizar.Location = new Point(360, 395);
             btnAtualizar.Name = "btnAtualizar";
             btnAtualizar.Size = new Size(139, 32);
-            btnAtualizar.TabIndex = 10;
+            btnAtualizar.TabIndex = 7;
             btnAtualizar.Text = "Atualizar";
             btnAtualizar.UseVisualStyleBackColor = true;
             btnAtualizar.Click += btnAtualizar_Click;
@@ -198,25 +187,40 @@ namespace FazendaUrbanaDesktop
             btnDeletar.Location = new Point(523, 395);
             btnDeletar.Name = "btnDeletar";
             btnDeletar.Size = new Size(134, 32);
-            btnDeletar.TabIndex = 11;
+            btnDeletar.TabIndex = 8;
             btnDeletar.Text = "Deletar";
             btnDeletar.UseVisualStyleBackColor = true;
             btnDeletar.Click += btnDeletar_Click;
             // 
-            // dataGridView1
+            // dgCadastrarFuncionario
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(21, 187);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(657, 189);
-            dataGridView1.TabIndex = 12;
+            dgCadastrarFuncionario.AllowUserToAddRows = false;
+            dgCadastrarFuncionario.AllowUserToDeleteRows = false;
+            dgCadastrarFuncionario.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgCadastrarFuncionario.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgCadastrarFuncionario.Location = new Point(21, 187);
+            dgCadastrarFuncionario.Name = "dgCadastrarFuncionario";
+            dgCadastrarFuncionario.ReadOnly = true;
+            dgCadastrarFuncionario.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgCadastrarFuncionario.Size = new Size(657, 189);
+            dgCadastrarFuncionario.TabIndex = 12;
+            // 
+            // mskCpf
+            // 
+            mskCpf.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            mskCpf.Location = new Point(132, 126);
+            mskCpf.Mask = "000,000,000-00";
+            mskCpf.Name = "mskCpf";
+            mskCpf.Size = new Size(123, 26);
+            mskCpf.TabIndex = 3;
             // 
             // frmFuncionarios
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(711, 439);
-            Controls.Add(dataGridView1);
+            Controls.Add(mskCpf);
+            Controls.Add(dgCadastrarFuncionario);
             Controls.Add(btnDeletar);
             Controls.Add(btnAtualizar);
             Controls.Add(btnLimpar);
@@ -225,7 +229,6 @@ namespace FazendaUrbanaDesktop
             Controls.Add(btnPesquisar);
             Controls.Add(btnCadastrar);
             Controls.Add(txtEndereco);
-            Controls.Add(txtCpf);
             Controls.Add(txtEmail);
             Controls.Add(txtNome);
             Controls.Add(lblEndereco);
@@ -237,7 +240,7 @@ namespace FazendaUrbanaDesktop
             Name = "frmFuncionarios";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Cadastro";
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgCadastrarFuncionario).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -250,7 +253,6 @@ namespace FazendaUrbanaDesktop
         private Label lblEndereco;
         private TextBox txtNome;
         private TextBox txtEmail;
-        private TextBox txtCpf;
         private TextBox txtEndereco;
         private Button btnCadastrar;
         private EventHandler Form2_Load;
@@ -260,6 +262,7 @@ namespace FazendaUrbanaDesktop
         private Button btnLimpar;
         private Button btnAtualizar;
         private Button btnDeletar;
-        private DataGridView dataGridView1;
+        private DataGridView dgCadastrarFuncionario;
+        private MaskedTextBox mskCpf;
     }
 }

@@ -32,12 +32,12 @@
             btnDeletar = new Button();
             btnAlterar = new Button();
             btnCadastrar = new Button();
-            mskCpf = new MaskedTextBox();
+            mskCnpj = new MaskedTextBox();
             txtEndereco = new TextBox();
             txtEmail = new TextBox();
             lblEndereco = new Label();
             lblEmail = new Label();
-            lblCpf = new Label();
+            lblCnpj = new Label();
             btnPesquisar = new Button();
             txtNome = new TextBox();
             lblNome = new Label();
@@ -53,12 +53,12 @@
             gbGerenciarCliente.Controls.Add(btnDeletar);
             gbGerenciarCliente.Controls.Add(btnAlterar);
             gbGerenciarCliente.Controls.Add(btnCadastrar);
-            gbGerenciarCliente.Controls.Add(mskCpf);
+            gbGerenciarCliente.Controls.Add(mskCnpj);
             gbGerenciarCliente.Controls.Add(txtEndereco);
             gbGerenciarCliente.Controls.Add(txtEmail);
             gbGerenciarCliente.Controls.Add(lblEndereco);
             gbGerenciarCliente.Controls.Add(lblEmail);
-            gbGerenciarCliente.Controls.Add(lblCpf);
+            gbGerenciarCliente.Controls.Add(lblCnpj);
             gbGerenciarCliente.Controls.Add(btnPesquisar);
             gbGerenciarCliente.Controls.Add(txtNome);
             gbGerenciarCliente.Controls.Add(lblNome);
@@ -78,8 +78,10 @@
             btnDeletar.Name = "btnDeletar";
             btnDeletar.Size = new Size(120, 32);
             btnDeletar.TabIndex = 15;
+            btnDeletar.TabStop = false;
             btnDeletar.Text = "Deletar";
             btnDeletar.UseVisualStyleBackColor = true;
+            btnDeletar.Click += btnDeletar_Click_1;
             // 
             // btnAlterar
             // 
@@ -88,8 +90,10 @@
             btnAlterar.Name = "btnAlterar";
             btnAlterar.Size = new Size(113, 32);
             btnAlterar.TabIndex = 14;
+            btnAlterar.TabStop = false;
             btnAlterar.Text = "Alterar";
             btnAlterar.UseVisualStyleBackColor = true;
+            btnAlterar.Click += btnAlterar_Click;
             // 
             // btnCadastrar
             // 
@@ -98,33 +102,38 @@
             btnCadastrar.Name = "btnCadastrar";
             btnCadastrar.Size = new Size(118, 32);
             btnCadastrar.TabIndex = 13;
+            btnCadastrar.TabStop = false;
             btnCadastrar.Text = "Cadastrar";
             btnCadastrar.UseVisualStyleBackColor = true;
+            btnCadastrar.Click += btnCadastrar_Click_1;
             // 
-            // mskCpf
+            // mskCnpj
             // 
-            mskCpf.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            mskCpf.Location = new Point(99, 98);
-            mskCpf.Mask = "000.000.000-00";
-            mskCpf.Name = "mskCpf";
-            mskCpf.Size = new Size(120, 26);
-            mskCpf.TabIndex = 11;
+            mskCnpj.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            mskCnpj.Location = new Point(99, 98);
+            mskCnpj.Mask = "00,000,000/0000-00";
+            mskCnpj.Name = "mskCnpj";
+            mskCnpj.ShortcutsEnabled = false;
+            mskCnpj.Size = new Size(158, 26);
+            mskCnpj.TabIndex = 2;
             // 
             // txtEndereco
             // 
+            txtEndereco.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtEndereco.Location = new Point(99, 159);
             txtEndereco.MaxLength = 100;
             txtEndereco.Name = "txtEndereco";
-            txtEndereco.Size = new Size(479, 23);
-            txtEndereco.TabIndex = 11;
+            txtEndereco.Size = new Size(479, 26);
+            txtEndereco.TabIndex = 4;
             // 
             // txtEmail
             // 
+            txtEmail.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtEmail.Location = new Point(99, 130);
             txtEmail.MaxLength = 100;
             txtEmail.Name = "txtEmail";
-            txtEmail.Size = new Size(479, 23);
-            txtEmail.TabIndex = 10;
+            txtEmail.Size = new Size(479, 26);
+            txtEmail.TabIndex = 3;
             // 
             // lblEndereco
             // 
@@ -146,15 +155,15 @@
             lblEmail.TabIndex = 7;
             lblEmail.Text = "Email:";
             // 
-            // lblCpf
+            // lblCnpj
             // 
-            lblCpf.AutoSize = true;
-            lblCpf.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblCpf.Location = new Point(56, 103);
-            lblCpf.Name = "lblCpf";
-            lblCpf.Size = new Size(37, 16);
-            lblCpf.TabIndex = 6;
-            lblCpf.Text = "CPF:";
+            lblCnpj.AutoSize = true;
+            lblCnpj.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblCnpj.Location = new Point(48, 103);
+            lblCnpj.Name = "lblCnpj";
+            lblCnpj.Size = new Size(45, 16);
+            lblCnpj.TabIndex = 6;
+            lblCnpj.Text = "CNPJ:";
             // 
             // btnPesquisar
             // 
@@ -163,8 +172,10 @@
             btnPesquisar.Name = "btnPesquisar";
             btnPesquisar.Size = new Size(151, 25);
             btnPesquisar.TabIndex = 5;
+            btnPesquisar.TabStop = false;
             btnPesquisar.Text = "Pesquisar";
             btnPesquisar.UseVisualStyleBackColor = true;
+            btnPesquisar.Click += btnPesquisar_Click;
             // 
             // txtNome
             // 
@@ -173,7 +184,7 @@
             txtNome.MaxLength = 100;
             txtNome.Name = "txtNome";
             txtNome.Size = new Size(479, 26);
-            txtNome.TabIndex = 4;
+            txtNome.TabIndex = 1;
             // 
             // lblNome
             // 
@@ -187,11 +198,17 @@
             // 
             // dgGerenciarCliente
             // 
+            dgGerenciarCliente.AllowUserToAddRows = false;
+            dgGerenciarCliente.AllowUserToDeleteRows = false;
+            dgGerenciarCliente.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgGerenciarCliente.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgGerenciarCliente.Location = new Point(6, 305);
             dgGerenciarCliente.Name = "dgGerenciarCliente";
+            dgGerenciarCliente.ReadOnly = true;
+            dgGerenciarCliente.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgGerenciarCliente.Size = new Size(764, 191);
-            dgGerenciarCliente.TabIndex = 2;
+            dgGerenciarCliente.TabIndex = 10;
+            dgGerenciarCliente.TabStop = false;
             // 
             // lblId
             // 
@@ -238,13 +255,13 @@
         private Label lblId;
         private Label lblClienteId;
         private Label lblEmail;
-        private Label lblCpf;
+        private Label lblCnpj;
         private Button btnPesquisar;
         private TextBox txtNome;
         private Button btnDeletar;
         private Button btnAlterar;
         private Button btnCadastrar;
-        private MaskedTextBox mskCpf;
+        private MaskedTextBox mskCnpj;
         private TextBox txtEndereco;
         private TextBox txtEmail;
         private Label lblEndereco;

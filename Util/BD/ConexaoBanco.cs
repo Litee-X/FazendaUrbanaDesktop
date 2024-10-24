@@ -1,15 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
-
+﻿using System.Data.SqlClient;
 
 namespace Util.BD
 {
-    public class ConexaoBancoBD
-    { 
-        public string connectionString = "server=localhost;database=dbFuncionarios;user=root;password=Hyago04102002@;SslMode=none";
+    public class ConexaoBanco
+    {
+        private readonly string _connectionString;
+
+        public ConexaoBanco(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
+        public SqlConnection ObterConexao()
+        {
+            return new SqlConnection(_connectionString);
+        }
     }
 }

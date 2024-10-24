@@ -61,8 +61,9 @@
             // gerenciarToolStripMenuItem
             // 
             gerenciarToolStripMenuItem.Name = "gerenciarToolStripMenuItem";
-            gerenciarToolStripMenuItem.Size = new Size(180, 22);
+            gerenciarToolStripMenuItem.Size = new Size(124, 22);
             gerenciarToolStripMenuItem.Text = "Gerenciar";
+            gerenciarToolStripMenuItem.Click += gerenciarToolStripMenuItem_Click_1;
             // 
             // fornecedorToolStripMenuItem
             // 
@@ -89,6 +90,7 @@
             gerenciarToolStripMenuItem2.Name = "gerenciarToolStripMenuItem2";
             gerenciarToolStripMenuItem2.Size = new Size(124, 22);
             gerenciarToolStripMenuItem2.Text = "Gerenciar";
+            gerenciarToolStripMenuItem2.Click += gerenciarToolStripMenuItem2_Click;
             // 
             // funcionarioToolStripMenuItem
             // 
@@ -114,8 +116,9 @@
             // gerenciarToolStripMenuItem4
             // 
             gerenciarToolStripMenuItem4.Name = "gerenciarToolStripMenuItem4";
-            gerenciarToolStripMenuItem4.Size = new Size(124, 22);
+            gerenciarToolStripMenuItem4.Size = new Size(180, 22);
             gerenciarToolStripMenuItem4.Text = "Gerenciar";
+            gerenciarToolStripMenuItem4.Click += gerenciarToolStripMenuItem4_Click;
             // 
             // frmMenu
             // 
