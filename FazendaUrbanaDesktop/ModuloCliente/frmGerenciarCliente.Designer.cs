@@ -30,7 +30,7 @@
         {
             gbGerenciarCliente = new GroupBox();
             btnDeletar = new Button();
-            btnAlterar = new Button();
+            btnAtualizar = new Button();
             btnCadastrar = new Button();
             mskCnpj = new MaskedTextBox();
             txtEndereco = new TextBox();
@@ -51,7 +51,7 @@
             // gbGerenciarCliente
             // 
             gbGerenciarCliente.Controls.Add(btnDeletar);
-            gbGerenciarCliente.Controls.Add(btnAlterar);
+            gbGerenciarCliente.Controls.Add(btnAtualizar);
             gbGerenciarCliente.Controls.Add(btnCadastrar);
             gbGerenciarCliente.Controls.Add(mskCnpj);
             gbGerenciarCliente.Controls.Add(txtEndereco);
@@ -83,17 +83,17 @@
             btnDeletar.UseVisualStyleBackColor = true;
             btnDeletar.Click += btnDeletar_Click_1;
             // 
-            // btnAlterar
+            // btnAtualizar
             // 
-            btnAlterar.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnAlterar.Location = new Point(144, 233);
-            btnAlterar.Name = "btnAlterar";
-            btnAlterar.Size = new Size(113, 32);
-            btnAlterar.TabIndex = 14;
-            btnAlterar.TabStop = false;
-            btnAlterar.Text = "Alterar";
-            btnAlterar.UseVisualStyleBackColor = true;
-            btnAlterar.Click += btnAlterar_Click;
+            btnAtualizar.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnAtualizar.Location = new Point(144, 233);
+            btnAtualizar.Name = "btnAtualizar";
+            btnAtualizar.Size = new Size(113, 32);
+            btnAtualizar.TabIndex = 14;
+            btnAtualizar.TabStop = false;
+            btnAtualizar.Text = "Atualizar";
+            btnAtualizar.UseVisualStyleBackColor = true;
+            btnAtualizar.Click += btnAtualizar_Click;
             // 
             // btnCadastrar
             // 
@@ -259,7 +259,7 @@
         private Button btnPesquisar;
         private TextBox txtNome;
         private Button btnDeletar;
-        private Button btnAlterar;
+        private Button btnAtualizar;
         private Button btnCadastrar;
         private MaskedTextBox mskCnpj;
         private TextBox txtEndereco;

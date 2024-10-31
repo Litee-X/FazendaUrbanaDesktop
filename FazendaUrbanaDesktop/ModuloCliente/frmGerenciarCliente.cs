@@ -105,7 +105,7 @@ namespace FazendaUrbanaDesktop.ModuloCliente
         }
 
         // Botão de atualizar cliente
-        private void btnAlterar_Click(object sender, EventArgs e)
+        private void btnAtualizar_Click(object sender, EventArgs e)
         {
             try
             {
