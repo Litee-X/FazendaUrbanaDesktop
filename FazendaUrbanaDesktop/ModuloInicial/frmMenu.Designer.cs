@@ -47,7 +47,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { clienteToolStripMenuItem, fornecedorToolStripMenuItem, produtoToolStripMenuItem, funcionarioToolStripMenuItem, usuarioToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(800, 24);
+            menuStrip1.Size = new Size(1066, 24);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -75,8 +75,9 @@
             // gerenciarToolStripMenuItem1
             // 
             gerenciarToolStripMenuItem1.Name = "gerenciarToolStripMenuItem1";
-            gerenciarToolStripMenuItem1.Size = new Size(124, 22);
+            gerenciarToolStripMenuItem1.Size = new Size(180, 22);
             gerenciarToolStripMenuItem1.Text = "Gerenciar";
+            gerenciarToolStripMenuItem1.Click += gerenciarToolStripMenuItem1_Click;
             // 
             // produtoToolStripMenuItem
             // 
@@ -116,7 +117,7 @@
             // gerenciarToolStripMenuItem4
             // 
             gerenciarToolStripMenuItem4.Name = "gerenciarToolStripMenuItem4";
-            gerenciarToolStripMenuItem4.Size = new Size(180, 22);
+            gerenciarToolStripMenuItem4.Size = new Size(124, 22);
             gerenciarToolStripMenuItem4.Text = "Gerenciar";
             gerenciarToolStripMenuItem4.Click += gerenciarToolStripMenuItem4_Click;
             // 
@@ -125,7 +126,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveBorder;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1066, 592);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             MaximizeBox = false;

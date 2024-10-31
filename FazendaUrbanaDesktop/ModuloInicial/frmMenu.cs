@@ -1,7 +1,8 @@
 ﻿using FazendaUrbanaDesktop.ModuloCliente;
 using FazendaUrbanaDesktop.ModuloFuncionarios;
 using FazendaUrbanaDesktop.ModuloProduto;
-using FazendaUrbanaDesktop.ModuloUsuario; 
+using FazendaUrbanaDesktop.ModuloUsuario;
+using FazendaUrbanaDesktop.ModuloFornecedor;
 using Util.BD;
 using System.Windows.Forms;
 
@@ -65,6 +66,22 @@ namespace FazendaUrbanaDesktop.ModuloInicial
 
                 // Exibe o formulário
                 frmCadastroUsuario.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro: " + ex.Message);
+            }
+        }
+
+        private void gerenciarToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Cria uma nova instância do formulário de cadastro de fornecedor
+                frmGerenciarFornecedor frmGerenciarFornecedor = new frmGerenciarFornecedor(_factory);
+
+                // Exibe o formulário
+                frmGerenciarFornecedor.Show();
             }
             catch (Exception ex)
             {
