@@ -34,7 +34,6 @@
             btnCadastrar = new Button();
             btnAtualizar = new Button();
             btnDeletar = new Button();
-            btnLimpar = new Button();
             gbCadastrarUsuario = new GroupBox();
             mskCpf = new MaskedTextBox();
             lblEndereco = new Label();
@@ -45,6 +44,7 @@
             dgCadastrarUsuario = new DataGridView();
             gbCadastrarUsuario.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgCadastrarUsuario).BeginInit();
+            SuspendLayout();
             // 
             // txtEmail
             // 
@@ -103,17 +103,6 @@
             btnDeletar.UseVisualStyleBackColor = true;
             btnDeletar.Click += btnDeletar_Click;
             // 
-            // btnLimpar
-            // 
-            btnLimpar.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnLimpar.Location = new Point(494, 11);
-            btnLimpar.Name = "btnLimpar";
-            btnLimpar.Size = new Size(137, 27);
-            btnLimpar.TabIndex = 9;
-            btnLimpar.Text = "Limpar";
-            btnLimpar.UseVisualStyleBackColor = true;
-            btnLimpar.Click += btnLimpar_Click;
-            // 
             // gbCadastrarUsuario
             // 
             gbCadastrarUsuario.Controls.Add(mskCpf);
@@ -126,13 +115,12 @@
             gbCadastrarUsuario.Controls.Add(btnAtualizar);
             gbCadastrarUsuario.Controls.Add(txtNome);
             gbCadastrarUsuario.Controls.Add(btnDeletar);
-            gbCadastrarUsuario.Controls.Add(btnLimpar);
             gbCadastrarUsuario.Controls.Add(txtEndereco);
             gbCadastrarUsuario.Controls.Add(btnCadastrar);
             gbCadastrarUsuario.Controls.Add(txtEmail);
             gbCadastrarUsuario.Location = new Point(12, 12);
             gbCadastrarUsuario.Name = "gbCadastrarUsuario";
-            gbCadastrarUsuario.Size = new Size(776, 426);
+            gbCadastrarUsuario.Size = new Size(649, 426);
             gbCadastrarUsuario.TabIndex = 8;
             gbCadastrarUsuario.TabStop = false;
             // 
@@ -187,10 +175,11 @@
             // 
             // txtPesquisa
             // 
+            txtPesquisa.Font = new Font("Arial", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtPesquisa.Location = new Point(6, 296);
             txtPesquisa.Name = "txtPesquisa";
             txtPesquisa.PlaceholderText = "Pesquisa";
-            txtPesquisa.Size = new Size(495, 23);
+            txtPesquisa.Size = new Size(495, 22);
             txtPesquisa.TabIndex = 5;
             txtPesquisa.TextChanged += txtPesquisa_TextChanged;
             // 
@@ -198,26 +187,27 @@
             // 
             dgCadastrarUsuario.AllowUserToAddRows = false;
             dgCadastrarUsuario.AllowUserToDeleteRows = false;
+            dgCadastrarUsuario.AllowUserToResizeRows = false;
             dgCadastrarUsuario.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgCadastrarUsuario.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgCadastrarUsuario.Location = new Point(6, 140);
             dgCadastrarUsuario.Name = "dgCadastrarUsuario";
             dgCadastrarUsuario.ReadOnly = true;
             dgCadastrarUsuario.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgCadastrarUsuario.Size = new Size(764, 150);
+            dgCadastrarUsuario.Size = new Size(637, 150);
             dgCadastrarUsuario.TabIndex = 8;
             // 
             // frmCadastroUsuario
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(673, 450);
             Controls.Add(gbCadastrarUsuario);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "frmCadastroUsuario";
             ShowIcon = false;
-            StartPosition = FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.CenterParent;
             Text = "CadastroUsuario";
             gbCadastrarUsuario.ResumeLayout(false);
             gbCadastrarUsuario.PerformLayout();
@@ -234,7 +224,6 @@
         private Button btnCadastrar;
         private Button btnAtualizar;
         private Button btnDeletar;
-        private Button btnLimpar;
         private GroupBox gbCadastrarUsuario;
         private Label lblEndereco;
         private Label lblEmail;

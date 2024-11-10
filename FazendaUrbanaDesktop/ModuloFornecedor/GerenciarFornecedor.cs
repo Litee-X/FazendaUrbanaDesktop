@@ -87,6 +87,31 @@ namespace FazendaUrbanaDesktop.ModuloFornecedor
             return tabelaFornecedores; // Retorna a tabela com os fornecedores encontrados
         }
 
+        public DataTable PesquisarFornecedores(string pesquisa, ConexaoBanco factory)
+        {
+            DataTable tabelaFornecedores = new DataTable();
+
+            try
+            {
+                using (SqlConnection sqlConexaoBanco = factory.ObterConexao())
+                {
+                    sqlConexaoBanco.Open();
+                    string select = "SELECT nome, email, cnpj, endereco FROM Fornecedor WHERE nome LIKE @pesquisa OR cnpj LIKE @pesquisa";
+                    SqlCommand comandoSql = new SqlCommand(select, sqlConexaoBanco);
+                    comandoSql.Parameters.AddWithValue("@pesquisa", $"%{pesquisa}%");
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(comandoSql);
+                    adapter.Fill(tabelaFornecedores); // Preenche o DataTable com os resultados da pesquisa
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao pesquisar fornecedores: " + ex.Message);
+            }
+
+            return tabelaFornecedores;
+        }
+
         public bool AtualizarFornecedor(ConexaoBanco factory)
         {
             try

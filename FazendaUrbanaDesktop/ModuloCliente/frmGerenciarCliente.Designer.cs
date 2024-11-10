@@ -29,8 +29,9 @@
         private void InitializeComponent()
         {
             gbGerenciarCliente = new GroupBox();
+            txtPesquisa = new TextBox();
             btnDeletar = new Button();
-            btnAlterar = new Button();
+            btnAtualizar = new Button();
             btnCadastrar = new Button();
             mskCnpj = new MaskedTextBox();
             txtEndereco = new TextBox();
@@ -38,20 +39,18 @@
             lblEndereco = new Label();
             lblEmail = new Label();
             lblCnpj = new Label();
-            btnPesquisar = new Button();
             txtNome = new TextBox();
             lblNome = new Label();
             dgGerenciarCliente = new DataGridView();
-            lblId = new Label();
-            lblClienteId = new Label();
             gbGerenciarCliente.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgGerenciarCliente).BeginInit();
             SuspendLayout();
             // 
             // gbGerenciarCliente
             // 
+            gbGerenciarCliente.Controls.Add(txtPesquisa);
             gbGerenciarCliente.Controls.Add(btnDeletar);
-            gbGerenciarCliente.Controls.Add(btnAlterar);
+            gbGerenciarCliente.Controls.Add(btnAtualizar);
             gbGerenciarCliente.Controls.Add(btnCadastrar);
             gbGerenciarCliente.Controls.Add(mskCnpj);
             gbGerenciarCliente.Controls.Add(txtEndereco);
@@ -59,58 +58,65 @@
             gbGerenciarCliente.Controls.Add(lblEndereco);
             gbGerenciarCliente.Controls.Add(lblEmail);
             gbGerenciarCliente.Controls.Add(lblCnpj);
-            gbGerenciarCliente.Controls.Add(btnPesquisar);
             gbGerenciarCliente.Controls.Add(txtNome);
             gbGerenciarCliente.Controls.Add(lblNome);
             gbGerenciarCliente.Controls.Add(dgGerenciarCliente);
-            gbGerenciarCliente.Controls.Add(lblId);
-            gbGerenciarCliente.Controls.Add(lblClienteId);
             gbGerenciarCliente.Location = new Point(12, 12);
             gbGerenciarCliente.Name = "gbGerenciarCliente";
-            gbGerenciarCliente.Size = new Size(776, 550);
+            gbGerenciarCliente.Size = new Size(776, 530);
             gbGerenciarCliente.TabIndex = 0;
             gbGerenciarCliente.TabStop = false;
+            // 
+            // txtPesquisa
+            // 
+            txtPesquisa.Font = new Font("Arial", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtPesquisa.Location = new Point(6, 417);
+            txtPesquisa.Name = "txtPesquisa";
+            txtPesquisa.PlaceholderText = "Pesquisa";
+            txtPesquisa.Size = new Size(561, 22);
+            txtPesquisa.TabIndex = 8;
+            txtPesquisa.TextChanged += txtPesquisa_TextChanged_1;
             // 
             // btnDeletar
             // 
             btnDeletar.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnDeletar.Location = new Point(263, 233);
+            btnDeletar.Location = new Point(249, 469);
             btnDeletar.Name = "btnDeletar";
             btnDeletar.Size = new Size(120, 32);
-            btnDeletar.TabIndex = 15;
+            btnDeletar.TabIndex = 7;
             btnDeletar.TabStop = false;
             btnDeletar.Text = "Deletar";
             btnDeletar.UseVisualStyleBackColor = true;
-            btnDeletar.Click += btnDeletar_Click_1;
+            btnDeletar.Click += btnDeletar_Click;
             // 
-            // btnAlterar
+            // btnAtualizar
             // 
-            btnAlterar.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnAlterar.Location = new Point(144, 233);
-            btnAlterar.Name = "btnAlterar";
-            btnAlterar.Size = new Size(113, 32);
-            btnAlterar.TabIndex = 14;
-            btnAlterar.TabStop = false;
-            btnAlterar.Text = "Alterar";
-            btnAlterar.UseVisualStyleBackColor = true;
-            btnAlterar.Click += btnAlterar_Click;
+            btnAtualizar.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnAtualizar.Location = new Point(130, 469);
+            btnAtualizar.Name = "btnAtualizar";
+            btnAtualizar.Size = new Size(113, 32);
+            btnAtualizar.TabIndex = 6;
+            btnAtualizar.TabStop = false;
+            btnAtualizar.Text = "Atualizar";
+            btnAtualizar.UseVisualStyleBackColor = true;
+            btnAtualizar.Click += btnAtualizar_Click;
             // 
             // btnCadastrar
             // 
             btnCadastrar.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnCadastrar.Location = new Point(20, 233);
+            btnCadastrar.Location = new Point(6, 469);
             btnCadastrar.Name = "btnCadastrar";
             btnCadastrar.Size = new Size(118, 32);
-            btnCadastrar.TabIndex = 13;
+            btnCadastrar.TabIndex = 5;
             btnCadastrar.TabStop = false;
             btnCadastrar.Text = "Cadastrar";
             btnCadastrar.UseVisualStyleBackColor = true;
-            btnCadastrar.Click += btnCadastrar_Click_1;
+            btnCadastrar.Click += btnCadastrar_Click;
             // 
             // mskCnpj
             // 
             mskCnpj.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            mskCnpj.Location = new Point(99, 98);
+            mskCnpj.Location = new Point(88, 54);
             mskCnpj.Mask = "00,000,000/0000-00";
             mskCnpj.Name = "mskCnpj";
             mskCnpj.ShortcutsEnabled = false;
@@ -120,7 +126,7 @@
             // txtEndereco
             // 
             txtEndereco.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtEndereco.Location = new Point(99, 159);
+            txtEndereco.Location = new Point(88, 115);
             txtEndereco.MaxLength = 100;
             txtEndereco.Name = "txtEndereco";
             txtEndereco.Size = new Size(479, 26);
@@ -129,7 +135,7 @@
             // txtEmail
             // 
             txtEmail.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtEmail.Location = new Point(99, 130);
+            txtEmail.Location = new Point(88, 86);
             txtEmail.MaxLength = 100;
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(479, 26);
@@ -139,7 +145,7 @@
             // 
             lblEndereco.AutoSize = true;
             lblEndereco.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblEndereco.Location = new Point(22, 161);
+            lblEndereco.Location = new Point(11, 117);
             lblEndereco.Name = "lblEndereco";
             lblEndereco.Size = new Size(71, 16);
             lblEndereco.TabIndex = 8;
@@ -149,7 +155,7 @@
             // 
             lblEmail.AutoSize = true;
             lblEmail.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblEmail.Location = new Point(46, 132);
+            lblEmail.Location = new Point(35, 88);
             lblEmail.Name = "lblEmail";
             lblEmail.Size = new Size(47, 16);
             lblEmail.TabIndex = 7;
@@ -159,28 +165,16 @@
             // 
             lblCnpj.AutoSize = true;
             lblCnpj.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblCnpj.Location = new Point(48, 103);
+            lblCnpj.Location = new Point(37, 59);
             lblCnpj.Name = "lblCnpj";
             lblCnpj.Size = new Size(45, 16);
             lblCnpj.TabIndex = 6;
             lblCnpj.Text = "CNPJ:";
             // 
-            // btnPesquisar
-            // 
-            btnPesquisar.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnPesquisar.Location = new Point(596, 19);
-            btnPesquisar.Name = "btnPesquisar";
-            btnPesquisar.Size = new Size(151, 25);
-            btnPesquisar.TabIndex = 5;
-            btnPesquisar.TabStop = false;
-            btnPesquisar.Text = "Pesquisar";
-            btnPesquisar.UseVisualStyleBackColor = true;
-            btnPesquisar.Click += btnPesquisar_Click;
-            // 
             // txtNome
             // 
             txtNome.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtNome.Location = new Point(99, 66);
+            txtNome.Location = new Point(88, 22);
             txtNome.MaxLength = 100;
             txtNome.Name = "txtNome";
             txtNome.Size = new Size(479, 26);
@@ -190,7 +184,7 @@
             // 
             lblNome.AutoSize = true;
             lblNome.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblNome.Location = new Point(45, 71);
+            lblNome.Location = new Point(34, 27);
             lblNome.Name = "lblNome";
             lblNome.Size = new Size(48, 16);
             lblNome.TabIndex = 3;
@@ -200,46 +194,28 @@
             // 
             dgGerenciarCliente.AllowUserToAddRows = false;
             dgGerenciarCliente.AllowUserToDeleteRows = false;
+            dgGerenciarCliente.AllowUserToResizeRows = false;
             dgGerenciarCliente.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgGerenciarCliente.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgGerenciarCliente.Location = new Point(6, 305);
+            dgGerenciarCliente.Location = new Point(6, 147);
             dgGerenciarCliente.Name = "dgGerenciarCliente";
             dgGerenciarCliente.ReadOnly = true;
             dgGerenciarCliente.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgGerenciarCliente.Size = new Size(764, 191);
+            dgGerenciarCliente.Size = new Size(764, 264);
             dgGerenciarCliente.TabIndex = 10;
             dgGerenciarCliente.TabStop = false;
-            // 
-            // lblId
-            // 
-            lblId.AutoSize = true;
-            lblId.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblId.Location = new Point(99, 26);
-            lblId.Name = "lblId";
-            lblId.Size = new Size(0, 18);
-            lblId.TabIndex = 1;
-            // 
-            // lblClienteId
-            // 
-            lblClienteId.AutoSize = true;
-            lblClienteId.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblClienteId.Location = new Point(20, 25);
-            lblClienteId.Name = "lblClienteId";
-            lblClienteId.Size = new Size(73, 16);
-            lblClienteId.TabIndex = 0;
-            lblClienteId.Text = "Cliente ID:";
             // 
             // frmGerenciarCliente
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(801, 575);
+            ClientSize = new Size(801, 554);
             Controls.Add(gbGerenciarCliente);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "frmGerenciarCliente";
             ShowIcon = false;
-            StartPosition = FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.CenterParent;
             Text = "frmGerenciarCliente";
             gbGerenciarCliente.ResumeLayout(false);
             gbGerenciarCliente.PerformLayout();
@@ -252,18 +228,16 @@
         private GroupBox gbGerenciarCliente;
         private Label lblNome;
         private DataGridView dgGerenciarCliente;
-        private Label lblId;
-        private Label lblClienteId;
         private Label lblEmail;
         private Label lblCnpj;
-        private Button btnPesquisar;
         private TextBox txtNome;
         private Button btnDeletar;
-        private Button btnAlterar;
+        private Button btnAtualizar;
         private Button btnCadastrar;
         private MaskedTextBox mskCnpj;
         private TextBox txtEndereco;
         private TextBox txtEmail;
         private Label lblEndereco;
+        private TextBox txtPesquisa;
     }
 }

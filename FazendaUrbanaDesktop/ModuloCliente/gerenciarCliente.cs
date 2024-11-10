@@ -11,9 +11,9 @@ namespace FazendaUrbanaDesktop.ModuloCliente
         public string Nome { get; set; }
         public string Email { get; set; }
         public string Cnpj { get; set; }
-        public int Id { get; set; }
-        public string Endereco { get; set; } // Adicionando a propriedade Endereco
+        public string Endereco { get; set; }
 
+        // Método para cadastrar cliente
         public bool CadastrarCliente(ConexaoBanco factory)
         {
             try
@@ -22,13 +22,11 @@ namespace FazendaUrbanaDesktop.ModuloCliente
                 {
                     sqlConexaoBanco.Open();
                     string insert = "INSERT INTO Cliente (nome, email, cnpj, endereco) VALUES (@nome, @email, @cnpj, @endereco)";
-
                     SqlCommand comandoSql = new SqlCommand(insert, sqlConexaoBanco);
                     comandoSql.Parameters.AddWithValue("@nome", Nome);
                     comandoSql.Parameters.AddWithValue("@email", Email);
                     comandoSql.Parameters.AddWithValue("@cnpj", Cnpj);
-                    comandoSql.Parameters.AddWithValue("@endereco", Endereco); // Adicionando o parâmetro para o endereço
-
+                    comandoSql.Parameters.AddWithValue("@endereco", Endereco);
                     comandoSql.ExecuteNonQuery();
                     return true;
                 }
@@ -40,6 +38,7 @@ namespace FazendaUrbanaDesktop.ModuloCliente
             }
         }
 
+        // Método para localizar cliente com base no CNPJ
         public SqlDataReader LocalizarCliente(ConexaoBanco factory)
         {
             SqlDataReader reader = null;
@@ -48,11 +47,10 @@ namespace FazendaUrbanaDesktop.ModuloCliente
                 using (SqlConnection sqlConexaoBanco = factory.ObterConexao())
                 {
                     sqlConexaoBanco.Open();
-                    string select = "SELECT id, nome, email, cnpj, endereco FROM Cliente WHERE cnpj = @cnpj"; // Incluindo o endereço na seleção
+                    string select = "SELECT nome, email, cnpj, endereco FROM Cliente WHERE cnpj = @cnpj";
                     SqlCommand comandoSql = new SqlCommand(select, sqlConexaoBanco);
                     comandoSql.Parameters.AddWithValue("@cnpj", Cnpj);
-
-                    reader = comandoSql.ExecuteReader(); // Retorna o SqlDataReader para o método chamar
+                    reader = comandoSql.ExecuteReader();
                 }
             }
             catch (Exception ex)
@@ -62,6 +60,7 @@ namespace FazendaUrbanaDesktop.ModuloCliente
             return reader;
         }
 
+        // Método para atualizar cliente
         public bool AtualizarCliente(ConexaoBanco factory)
         {
             try
@@ -69,15 +68,13 @@ namespace FazendaUrbanaDesktop.ModuloCliente
                 using (SqlConnection sqlConexaoBanco = factory.ObterConexao())
                 {
                     sqlConexaoBanco.Open();
-                    string update = "UPDATE Cliente SET nome = @nome, email = @email, endereco = @endereco WHERE cnpj = @cnpj"; // Incluindo o endereço na atualização
-
+                    string update = "UPDATE Cliente SET nome = @nome, email = @email, endereco = @endereco WHERE cnpj = @cnpj";
                     SqlCommand comandoSql = new SqlCommand(update, sqlConexaoBanco);
                     comandoSql.Parameters.AddWithValue("@nome", Nome);
                     comandoSql.Parameters.AddWithValue("@email", Email);
                     comandoSql.Parameters.AddWithValue("@cnpj", Cnpj);
-                    comandoSql.Parameters.AddWithValue("@endereco", Endereco); // Adicionando o parâmetro para o endereço
-
-                    return comandoSql.ExecuteNonQuery() > 0; // Retorna true se a atualização foi bem-sucedida
+                    comandoSql.Parameters.AddWithValue("@endereco", Endereco);
+                    return comandoSql.ExecuteNonQuery() > 0;
                 }
             }
             catch (Exception ex)
@@ -87,6 +84,7 @@ namespace FazendaUrbanaDesktop.ModuloCliente
             }
         }
 
+        // Método para deletar cliente
         public bool DeletarCliente(ConexaoBanco factory)
         {
             try
@@ -95,11 +93,9 @@ namespace FazendaUrbanaDesktop.ModuloCliente
                 {
                     sqlConexaoBanco.Open();
                     string delete = "DELETE FROM Cliente WHERE cnpj = @cnpj";
-
                     SqlCommand comandoSql = new SqlCommand(delete, sqlConexaoBanco);
                     comandoSql.Parameters.AddWithValue("@cnpj", Cnpj);
-
-                    return comandoSql.ExecuteNonQuery() > 0; // Retorna true se a exclusão foi bem-sucedida
+                    return comandoSql.ExecuteNonQuery() > 0;
                 }
             }
             catch (Exception ex)
@@ -109,7 +105,7 @@ namespace FazendaUrbanaDesktop.ModuloCliente
             }
         }
 
-        // Novo método para obter todos os clientes
+        // Método para obter todos os clientes
         public DataTable ObterTodosClientes(ConexaoBanco factory)
         {
             DataTable tabelaClientes = new DataTable();
@@ -119,9 +115,8 @@ namespace FazendaUrbanaDesktop.ModuloCliente
                 using (SqlConnection sqlConexaoBanco = factory.ObterConexao())
                 {
                     sqlConexaoBanco.Open();
-                    string select = "SELECT id, nome, email, cnpj, endereco FROM Cliente"; // Incluindo o endereço na seleção
+                    string select = "SELECT nome, email, cnpj, endereco FROM Cliente";
                     SqlCommand comandoSql = new SqlCommand(select, sqlConexaoBanco);
-
                     SqlDataAdapter adapter = new SqlDataAdapter(comandoSql);
                     adapter.Fill(tabelaClientes);
                 }
@@ -132,6 +127,33 @@ namespace FazendaUrbanaDesktop.ModuloCliente
             }
 
             return tabelaClientes;
+        }
+
+        // Método para pesquisar clientes por nome ou CNPJ
+        public DataTable PesquisarFuncionarios(ConexaoBanco factory, string pesquisa)
+        {
+            try
+            {
+                using (var connection = factory.ObterConexao())
+                {
+                    string query = "SELECT nome, email, cnpj, endereco FROM Cliente WHERE nome LIKE @Pesquisa OR cpf LIKE @Pesquisa";
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Pesquisa", $"%{pesquisa}%");
+                        using (var adapter = new SqlDataAdapter(command))
+                        {
+                            var dataTable = new DataTable();
+                            adapter.Fill(dataTable);
+                            return dataTable;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao realizar a pesquisa: " + ex.Message);
+                return null;
+            }
         }
     }
 }

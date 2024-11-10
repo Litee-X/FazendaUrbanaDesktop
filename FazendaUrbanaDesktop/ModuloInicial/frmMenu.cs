@@ -4,6 +4,8 @@ using FazendaUrbanaDesktop.ModuloProduto;
 using FazendaUrbanaDesktop.ModuloUsuario;
 using FazendaUrbanaDesktop.ModuloFornecedor;
 using Util.BD;
+using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace FazendaUrbanaDesktop.ModuloInicial
@@ -16,27 +18,39 @@ namespace FazendaUrbanaDesktop.ModuloInicial
         {
             InitializeComponent();
             _factory = factory;
+
+            this.IsMdiContainer = true;  // Define o frmMenu como MDI Container
+            this.StartPosition = FormStartPosition.CenterScreen;  // Inicia a janela no centro da tela
+            // Não definimos um tamanho fixo, ele usará o tamanho do Designer
         }
 
-        private void gerenciarToolStripMenuItem3_Click(object sender, EventArgs e)
+        // Método para fechar todas as janelas filhas antes de abrir uma nova
+        private void FecharJanelasFilhas()
         {
-            try
+            foreach (Form frm in this.MdiChildren)
             {
-                frmFuncionarios frmFuncionarios = new frmFuncionarios(_factory);
-                frmFuncionarios.Show();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erro: " + ex.Message);
+                frm.Close();  // Fecha todas as janelas abertas
             }
         }
 
+        // Método genérico para abrir um formulário filho
+        private void AbrirFormulario(Form formulario)
+        {
+            // Fechar janelas filhas existentes antes de abrir uma nova
+            FecharJanelasFilhas();
+
+            // Define o MDI Parent e exibe o formulário
+            formulario.MdiParent = this;
+            formulario.Show();
+        }
+
+        // Evento para abrir o formulário de Gerenciamento de Produtos
         private void gerenciarToolStripMenuItem2_Click(object sender, EventArgs e)
         {
             try
             {
                 frmGerenciarProduto frmGerenciarProduto = new frmGerenciarProduto(_factory);
-                frmGerenciarProduto.Show();
+                AbrirFormulario(frmGerenciarProduto);
             }
             catch (Exception ex)
             {
@@ -44,12 +58,13 @@ namespace FazendaUrbanaDesktop.ModuloInicial
             }
         }
 
+        // Evento para abrir o formulário de Gerenciamento de Clientes
         private void gerenciarToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             try
             {
                 frmGerenciarCliente frmGerenciarCliente = new frmGerenciarCliente(_factory);
-                frmGerenciarCliente.Show();
+                AbrirFormulario(frmGerenciarCliente);
             }
             catch (Exception ex)
             {
@@ -57,15 +72,13 @@ namespace FazendaUrbanaDesktop.ModuloInicial
             }
         }
 
+        // Evento para abrir o formulário de Cadastro de Usuário
         private void gerenciarToolStripMenuItem4_Click(object sender, EventArgs e)
         {
             try
             {
-                // Cria uma nova instância do formulário de cadastro de usuário
                 frmCadastroUsuario frmCadastroUsuario = new frmCadastroUsuario(_factory);
-
-                // Exibe o formulário
-                frmCadastroUsuario.Show();
+                AbrirFormulario(frmCadastroUsuario);
             }
             catch (Exception ex)
             {
@@ -73,15 +86,27 @@ namespace FazendaUrbanaDesktop.ModuloInicial
             }
         }
 
+        // Evento para abrir o formulário de Gerenciamento de Fornecedores
         private void gerenciarToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             try
             {
-                // Cria uma nova instância do formulário de cadastro de fornecedor
                 frmGerenciarFornecedor frmGerenciarFornecedor = new frmGerenciarFornecedor(_factory);
+                AbrirFormulario(frmGerenciarFornecedor);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro: " + ex.Message);
+            }
+        }
 
-                // Exibe o formulário
-                frmGerenciarFornecedor.Show();
+        // Evento para abrir o formulário de Funcionários
+        private void gerenciarToolStripMenuItem5_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                frmFuncionarios frmFuncionarios = new frmFuncionarios(_factory);
+                AbrirFormulario(frmFuncionarios);
             }
             catch (Exception ex)
             {

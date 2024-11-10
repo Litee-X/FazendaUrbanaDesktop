@@ -20,9 +20,8 @@ namespace FazendaUrbanaDesktop
 
         private void frmFuncionarios_Load(object sender, EventArgs e)
         {
-            dgCadastrarFuncionario.ReadOnly = true; // Define o DataGridView como somente leitura
-            dgCadastrarFuncionario.SelectionMode = DataGridViewSelectionMode.FullRowSelect; // Seleciona a linha inteira
-            dgCadastrarFuncionario.MultiSelect = false; // Desabilita a seleção de múltiplas linhas
+            txtNome.Focus(); // Foca no primeiro campo de texto
+            CarregarFuncionarios(); // Carrega a lista de funcionários
         }
 
         // Função para carregar todos os funcionários
@@ -43,67 +42,67 @@ namespace FazendaUrbanaDesktop
         // Função para carregar a seleção da linha no DataGridView para os campos
         private void dgCadastrarFuncionario_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0) // Verifica se a linha clicada é válida
+            if (dgCadastrarFuncionario.SelectedRows.Count > 0)
             {
-                var row = dgCadastrarFuncionario.Rows[e.RowIndex];
-                PreencherCampos(row); // Preenche os campos com os dados da linha selecionada
+                var linha = dgCadastrarFuncionario.SelectedRows[0];
+                txtNome.Text = linha.Cells["nome"].Value.ToString();
+                mskCpf.Text = linha.Cells["cpf"].Value.ToString();
+                txtEmail.Text = linha.Cells["email"].Value.ToString();
+                txtEndereco.Text = linha.Cells["endereco"].Value.ToString();
             }
-        }
-
-        // Função para preencher os campos de texto com os dados da linha selecionada
-        private void PreencherCampos(DataGridViewRow row)
-        {
-            lblId.Text = row.Cells["id"].Value.ToString();
-            txtNome.Text = row.Cells["nome"].Value.ToString();
-            txtEmail.Text = row.Cells["email"].Value.ToString();
-            mskCpf.Text = row.Cells["cpf"].Value.ToString();
-            txtEndereco.Text = row.Cells["endereco"].Value.ToString();
         }
 
         // Botão de cadastrar funcionário
         private void btnCadastrar_Click(object sender, EventArgs e)
         {
+            CadastrarFuncionario();
+        }
+
+        private void CadastrarFuncionario()
+        {
             try
             {
-                if (!string.IsNullOrWhiteSpace(txtNome.Text) &&
-                    !string.IsNullOrWhiteSpace(txtEmail.Text) &&
-                    !string.IsNullOrWhiteSpace(mskCpf.Text) &&
-                    !string.IsNullOrWhiteSpace(txtEndereco.Text))
+                string nome = txtNome.Text;
+                string cpf = mskCpf.Text;
+                string email = txtEmail.Text;
+                string endereco = txtEndereco.Text;
+
+                if (!string.IsNullOrWhiteSpace(nome) && !string.IsNullOrWhiteSpace(cpf) && !string.IsNullOrWhiteSpace(email) && !string.IsNullOrWhiteSpace(endereco))
                 {
                     var cadFuncionarios = new CadastroFuncionarios
                     {
-                        Nome = txtNome.Text,
-                        Email = txtEmail.Text,
-                        Cpf = mskCpf.Text,
-                        Endereco = txtEndereco.Text
+                        Nome = nome,
+                        Cpf = cpf,
+                        Email = email,
+                        Endereco = endereco
                     };
 
-                    if (!cadFuncionarios.CpfJaCadastrado(_factory)) // Verifica se o CPF já está cadastrado
+                    if (!cadFuncionarios.CpfJaCadastrado(_factory))
                     {
-                        if (cadFuncionarios.CadastrarFuncionarios(_factory))
+                        if (cadFuncionarios.CadastrarFuncionario(_factory))
                         {
-                            MessageBox.Show($"O funcionário {cadFuncionarios.Nome} foi cadastrado com sucesso!");
+                            MessageBox.Show("Funcionário cadastrado com sucesso!");
                             LimparCampos();
-                            CarregarFuncionarios(); // Recarrega a lista de funcionários
+                            CarregarFuncionarios();
                         }
                         else
                         {
-                            MessageBox.Show("Não foi possível cadastrar o funcionário!");
+                            MessageBox.Show("Erro ao cadastrar funcionário.");
                         }
                     }
                     else
                     {
-                        MessageBox.Show("CPF já cadastrado! Por favor, utilize um CPF diferente.");
+                        MessageBox.Show("CPF já cadastrado.");
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Favor preencher todos os campos corretamente!");
+                    MessageBox.Show("Preencha todos os campos.");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao cadastrar funcionário: " + ex.Message);
+                MessageBox.Show("Erro: " + ex.Message);
             }
         }
 
@@ -112,89 +111,111 @@ namespace FazendaUrbanaDesktop
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace(mskCpf.Text) &&
-                    !string.IsNullOrWhiteSpace(txtNome.Text) &&
-                    !string.IsNullOrWhiteSpace(txtEmail.Text) &&
-                    !string.IsNullOrWhiteSpace(txtEndereco.Text))
+                if (dgCadastrarFuncionario.SelectedRows.Count > 0)
                 {
+                    var linha = dgCadastrarFuncionario.SelectedRows[0];
+                    string cpf = linha.Cells["cpf"].Value.ToString(); // Obtém o CPF do funcionário
+
+                    // Obtem os valores dos campos; se vazio, mantém o valor original do DataGridView
+                    string nome = string.IsNullOrWhiteSpace(txtNome.Text) ? linha.Cells["nome"].Value.ToString() : txtNome.Text;
+                    string email = string.IsNullOrWhiteSpace(txtEmail.Text) ? linha.Cells["email"].Value.ToString() : txtEmail.Text;
+                    string endereco = string.IsNullOrWhiteSpace(txtEndereco.Text) ? linha.Cells["endereco"].Value.ToString() : txtEndereco.Text;
+
                     var cadFuncionarios = new CadastroFuncionarios
                     {
-                        Cpf = mskCpf.Text,
-                        Nome = txtNome.Text,
-                        Email = txtEmail.Text,
-                        Endereco = txtEndereco.Text
+                        Nome = nome,
+                        Cpf = cpf,
+                        Email = email,
+                        Endereco = endereco
                     };
 
                     if (cadFuncionarios.AtualizarFuncionarioPorCpf(_factory))
                     {
-                        MessageBox.Show("Os dados do funcionário foram atualizados com sucesso!");
+                        MessageBox.Show("Funcionário atualizado com sucesso!");
                         LimparCampos();
-                        CarregarFuncionarios(); // Recarrega a lista de funcionários
+                        CarregarFuncionarios(); // Recarrega os dados atualizados no DataGridView
                     }
                     else
                     {
-                        MessageBox.Show("Não foi possível atualizar as informações do funcionário");
+                        MessageBox.Show("Erro ao atualizar funcionário.");
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Favor localizar o funcionário que deseja atualizar as informações");
+                    MessageBox.Show("Selecione um funcionário para atualizar.");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao atualizar dados do funcionário: " + ex.Message);
+                MessageBox.Show("Erro: " + ex.Message);
             }
         }
 
-        // Botão de deletar funcionário
+        // Função para deletar um funcionário
         private void btnDeletar_Click(object sender, EventArgs e)
+        {
+            DeletarFuncionario();
+        }
+
+        private void DeletarFuncionario()
         {
             try
             {
-                if (dgCadastrarFuncionario.SelectedRows.Count > 0) // Verifica se há uma linha selecionada
+                if (dgCadastrarFuncionario.SelectedRows.Count > 0)
                 {
-                    // Obtém o CPF do funcionário selecionado
                     var linha = dgCadastrarFuncionario.SelectedRows[0];
-                    string cpf = linha.Cells["cpf"].Value.ToString(); // Captura o CPF do funcionário
+                    string cpf = linha.Cells["cpf"].Value.ToString();
 
-                    var cadFuncionarios = new CadastroFuncionarios
-                    {
-                        Cpf = cpf // Usar CPF para deletar
-                    };
+                    var cadFuncionarios = new CadastroFuncionarios { Cpf = cpf };
 
-                    // Chama o método de exclusão
                     if (cadFuncionarios.DeletarFuncionarioPorCpf(_factory))
                     {
-                        MessageBox.Show("O funcionário foi excluído com sucesso!");
+                        MessageBox.Show("Funcionário deletado com sucesso!");
                         LimparCampos();
-                        CarregarFuncionarios(); // Recarrega a lista de funcionários
+                        CarregarFuncionarios(); // Recarrega os dados no DataGridView
                     }
                     else
                     {
-                        MessageBox.Show("Não foi possível excluir o funcionário");
+                        MessageBox.Show("Erro ao deletar funcionário.");
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Selecione um funcionário para excluir.");
+                    MessageBox.Show("Selecione um funcionário para deletar.");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao excluir funcionário: " + ex.Message);
+                MessageBox.Show("Erro: " + ex.Message);
             }
         }
 
         // Função para limpar os campos de texto
         private void LimparCampos()
         {
-            lblId.Text = string.Empty;
             txtNome.Clear();
-            txtEmail.Clear();
             mskCpf.Clear();
+            txtEmail.Clear();
             txtEndereco.Clear();
-            mskCpf.Focus();
+            txtNome.Focus(); // Foca no campo nome
+        }
+
+        private void txtPesquisa_TextChanged_1(object sender, EventArgs e)
+        {
+            string pesquisa = txtPesquisa.Text;
+            using (SqlConnection conn = _factory.ObterConexao())
+            {
+                conn.Open();
+                string query = "SELECT nome, cpf, email, endereco FROM Funcionarios WHERE nome LIKE @pesquisa OR cpf LIKE @pesquisa";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@pesquisa", $"%{pesquisa}%");
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    dgCadastrarFuncionario.DataSource = dt;
+                }
+            }
         }
     }
 }

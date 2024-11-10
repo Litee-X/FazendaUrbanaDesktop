@@ -36,7 +36,7 @@
             produtoToolStripMenuItem = new ToolStripMenuItem();
             gerenciarToolStripMenuItem2 = new ToolStripMenuItem();
             funcionarioToolStripMenuItem = new ToolStripMenuItem();
-            gerenciarToolStripMenuItem3 = new ToolStripMenuItem();
+            gerenciarToolStripMenuItem5 = new ToolStripMenuItem();
             usuarioToolStripMenuItem = new ToolStripMenuItem();
             gerenciarToolStripMenuItem4 = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
@@ -47,7 +47,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { clienteToolStripMenuItem, fornecedorToolStripMenuItem, produtoToolStripMenuItem, funcionarioToolStripMenuItem, usuarioToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(1066, 24);
+            menuStrip1.Size = new Size(1317, 24);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -61,7 +61,7 @@
             // gerenciarToolStripMenuItem
             // 
             gerenciarToolStripMenuItem.Name = "gerenciarToolStripMenuItem";
-            gerenciarToolStripMenuItem.Size = new Size(124, 22);
+            gerenciarToolStripMenuItem.Size = new Size(180, 22);
             gerenciarToolStripMenuItem.Text = "Gerenciar";
             gerenciarToolStripMenuItem.Click += gerenciarToolStripMenuItem_Click_1;
             // 
@@ -75,7 +75,7 @@
             // gerenciarToolStripMenuItem1
             // 
             gerenciarToolStripMenuItem1.Name = "gerenciarToolStripMenuItem1";
-            gerenciarToolStripMenuItem1.Size = new Size(180, 22);
+            gerenciarToolStripMenuItem1.Size = new Size(124, 22);
             gerenciarToolStripMenuItem1.Text = "Gerenciar";
             gerenciarToolStripMenuItem1.Click += gerenciarToolStripMenuItem1_Click;
             // 
@@ -95,17 +95,17 @@
             // 
             // funcionarioToolStripMenuItem
             // 
-            funcionarioToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { gerenciarToolStripMenuItem3 });
+            funcionarioToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { gerenciarToolStripMenuItem5 });
             funcionarioToolStripMenuItem.Name = "funcionarioToolStripMenuItem";
             funcionarioToolStripMenuItem.Size = new Size(82, 20);
             funcionarioToolStripMenuItem.Text = "Funcionario";
             // 
-            // gerenciarToolStripMenuItem3
+            // gerenciarToolStripMenuItem5
             // 
-            gerenciarToolStripMenuItem3.Name = "gerenciarToolStripMenuItem3";
-            gerenciarToolStripMenuItem3.Size = new Size(124, 22);
-            gerenciarToolStripMenuItem3.Text = "Gerenciar";
-            gerenciarToolStripMenuItem3.Click += gerenciarToolStripMenuItem3_Click;
+            gerenciarToolStripMenuItem5.Name = "gerenciarToolStripMenuItem5";
+            gerenciarToolStripMenuItem5.Size = new Size(124, 22);
+            gerenciarToolStripMenuItem5.Text = "Gerenciar";
+            gerenciarToolStripMenuItem5.Click += gerenciarToolStripMenuItem5_Click;
             // 
             // usuarioToolStripMenuItem
             // 
@@ -126,13 +126,15 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveBorder;
-            ClientSize = new Size(1066, 592);
+            ClientSize = new Size(1317, 782);
             Controls.Add(menuStrip1);
+            IsMdiContainer = true;
             MainMenuStrip = menuStrip1;
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "frmMenu";
             ShowIcon = false;
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "frmMenu";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
@@ -150,8 +152,8 @@
         private ToolStripMenuItem gerenciarToolStripMenuItem;
         private ToolStripMenuItem gerenciarToolStripMenuItem1;
         private ToolStripMenuItem gerenciarToolStripMenuItem2;
-        private ToolStripMenuItem gerenciarToolStripMenuItem3;
         private ToolStripMenuItem usuarioToolStripMenuItem;
         private ToolStripMenuItem gerenciarToolStripMenuItem4;
+        private ToolStripMenuItem gerenciarToolStripMenuItem5;
     }
 }

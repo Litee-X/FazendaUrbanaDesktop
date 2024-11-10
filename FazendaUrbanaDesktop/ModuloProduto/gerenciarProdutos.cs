@@ -12,8 +12,21 @@ namespace FazendaUrbanaDesktop.ModuloProduto
         public int Quantidade { get; set; }
         public DateTime DataPlantio { get; set; }
 
+        // Método para validar se a data de plantio é válida (deve ser a data atual)
+        private bool ValidarDataPlantio()
+        {
+            return DataPlantio.Date == DateTime.Now.Date;
+        }
+
         public bool CadastrarProduto(ConexaoBanco factory)
         {
+            // Valida a data de plantio
+            if (!ValidarDataPlantio())
+            {
+                MessageBox.Show("A data de plantio deve ser a data atual.");
+                return false; // Se a data não for válida, retorna falso
+            }
+
             try
             {
                 using (SqlConnection sqlConexaoBanco = factory.ObterConexao())

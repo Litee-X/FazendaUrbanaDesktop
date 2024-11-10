@@ -6,49 +6,21 @@ using Util.BD;
 
 namespace FazendaUrbanaDesktop.ModuloFuncionarios
 {
-    internal class CadastroFuncionarios
+    public class CadastroFuncionarios
     {
-        private int id;
-        private string nome;
-        private string email;
-        private string cpf;
-        private string endereco;
-
-        public int Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
-        public string Nome
-        {
-            get { return nome; }
-            set { nome = value; }
-        }
-        public string Email
-        {
-            get { return email; }
-            set { email = value; }
-        }
-        public string Cpf
-        {
-            get { return cpf; }
-            set { cpf = value; }
-        }
-        public string Endereco
-        {
-            get { return endereco; }
-            set { endereco = value; }
-        }
+        public string Nome { get; set; }
+        public string Email { get; set; }
+        public string Cpf { get; set; }
+        public string Endereco { get; set; }
 
         // Método para cadastrar funcionário no banco de dados
-        public bool CadastrarFuncionarios(ConexaoBanco factory)
+        public bool CadastrarFuncionario(ConexaoBanco factory)
         {
             try
             {
                 using (SqlConnection sqlConnection = factory.ObterConexao())
                 {
                     sqlConnection.Open();
-
                     string insert = "INSERT INTO funcionarios (nome, email, cpf, endereco) VALUES (@Nome, @Email, @Cpf, @Endereco)";
                     using (SqlCommand comandoSql = new SqlCommand(insert, sqlConnection))
                     {
@@ -56,15 +28,14 @@ namespace FazendaUrbanaDesktop.ModuloFuncionarios
                         comandoSql.Parameters.AddWithValue("@Email", Email);
                         comandoSql.Parameters.AddWithValue("@Cpf", Cpf);
                         comandoSql.Parameters.AddWithValue("@Endereco", Endereco);
-
-                        comandoSql.ExecuteNonQuery();
+                        int rowsAffected = comandoSql.ExecuteNonQuery();
+                        return rowsAffected > 0; // Retorna verdadeiro se a inserção for bem-sucedida
                     }
                 }
-                return true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro no banco de dados - método CadastrarFuncionarios: " + ex.Message);
+                MessageBox.Show("Erro no banco de dados - método CadastrarFuncionario: " + ex.Message);
                 return false;
             }
         }
@@ -77,7 +48,6 @@ namespace FazendaUrbanaDesktop.ModuloFuncionarios
                 using (SqlConnection sqlConnection = factory.ObterConexao())
                 {
                     sqlConnection.Open();
-
                     string select = "SELECT COUNT(*) FROM funcionarios WHERE cpf = @Cpf";
                     using (SqlCommand comandoSql = new SqlCommand(select, sqlConnection))
                     {
@@ -94,40 +64,7 @@ namespace FazendaUrbanaDesktop.ModuloFuncionarios
             }
         }
 
-        // Método para localizar funcionário pelo CPF
-        public DataRow LocalizarFuncionarioPorCpf(ConexaoBanco factory)
-        {
-            try
-            {
-                using (SqlConnection sqlConnection = factory.ObterConexao())
-                {
-                    sqlConnection.Open();
-
-                    string select = "SELECT id, nome, email, cpf, endereco FROM funcionarios WHERE cpf = @Cpf";
-                    using (SqlCommand comandoSql = new SqlCommand(select, sqlConnection))
-                    {
-                        comandoSql.Parameters.AddWithValue("@Cpf", Cpf);
-                        using (SqlDataReader reader = comandoSql.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                DataTable dataTable = new DataTable();
-                                dataTable.Load(reader);
-                                return dataTable.Rows[0]; // Retorna a primeira linha encontrada
-                            }
-                        }
-                    }
-                }
-                return null; // Nenhum funcionário encontrado
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erro no banco de dados - método LocalizarFuncionarioPorCpf: " + ex.Message);
-                return null;
-            }
-        }
-
-        // Método para atualizar funcionário pelo CPF
+        // Método para atualizar funcionário no banco de dados
         public bool AtualizarFuncionarioPorCpf(ConexaoBanco factory)
         {
             try
@@ -135,7 +72,6 @@ namespace FazendaUrbanaDesktop.ModuloFuncionarios
                 using (SqlConnection sqlConnection = factory.ObterConexao())
                 {
                     sqlConnection.Open();
-
                     string update = "UPDATE funcionarios SET nome = @Nome, email = @Email, endereco = @Endereco WHERE cpf = @Cpf";
                     using (SqlCommand comandoSql = new SqlCommand(update, sqlConnection))
                     {
@@ -143,11 +79,10 @@ namespace FazendaUrbanaDesktop.ModuloFuncionarios
                         comandoSql.Parameters.AddWithValue("@Email", Email);
                         comandoSql.Parameters.AddWithValue("@Endereco", Endereco);
                         comandoSql.Parameters.AddWithValue("@Cpf", Cpf);
-
-                        comandoSql.ExecuteNonQuery();
+                        int rowsAffected = comandoSql.ExecuteNonQuery();
+                        return rowsAffected > 0; // Retorna verdadeiro se a atualização for bem-sucedida
                     }
                 }
-                return true;
             }
             catch (Exception ex)
             {
@@ -164,15 +99,14 @@ namespace FazendaUrbanaDesktop.ModuloFuncionarios
                 using (SqlConnection sqlConnection = factory.ObterConexao())
                 {
                     sqlConnection.Open();
-
                     string delete = "DELETE FROM funcionarios WHERE cpf = @Cpf";
                     using (SqlCommand comandoSql = new SqlCommand(delete, sqlConnection))
                     {
                         comandoSql.Parameters.AddWithValue("@Cpf", Cpf);
-                        comandoSql.ExecuteNonQuery();
+                        int rowsAffected = comandoSql.ExecuteNonQuery();
+                        return rowsAffected > 0; // Retorna verdadeiro se a exclusão for bem-sucedida
                     }
                 }
-                return true;
             }
             catch (Exception ex)
             {
@@ -184,17 +118,52 @@ namespace FazendaUrbanaDesktop.ModuloFuncionarios
         // Método para obter todos os funcionários
         public DataTable ObterTodosFuncionarios(ConexaoBanco factory)
         {
-            using (var connection = factory.ObterConexao())
+            try
             {
-                using (var command = new SqlCommand("SELECT id, nome, email, cpf, endereco FROM funcionarios", connection))
+                using (var connection = factory.ObterConexao())
                 {
-                    using (var adapter = new SqlDataAdapter(command))
+                    using (var command = new SqlCommand("SELECT nome, email, cpf, endereco FROM funcionarios", connection))
                     {
-                        var dataTable = new DataTable();
-                        adapter.Fill(dataTable);
-                        return dataTable;
+                        using (var adapter = new SqlDataAdapter(command))
+                        {
+                            var dataTable = new DataTable();
+                            adapter.Fill(dataTable);
+                            return dataTable;
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao carregar todos os funcionários: " + ex.Message);
+                return null;
+            }
+        }
+
+        // Método para pesquisar funcionários por nome ou CPF
+        public DataTable PesquisarFuncionarios(ConexaoBanco factory, string pesquisa)
+        {
+            try
+            {
+                using (var connection = factory.ObterConexao())
+                {
+                    string query = "SELECT nome, email, cpf, endereco FROM funcionarios WHERE nome LIKE @Pesquisa OR cpf LIKE @Pesquisa";
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Pesquisa", $"%{pesquisa}%");
+                        using (var adapter = new SqlDataAdapter(command))
+                        {
+                            var dataTable = new DataTable();
+                            adapter.Fill(dataTable);
+                            return dataTable;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao realizar a pesquisa: " + ex.Message);
+                return null;
             }
         }
     }

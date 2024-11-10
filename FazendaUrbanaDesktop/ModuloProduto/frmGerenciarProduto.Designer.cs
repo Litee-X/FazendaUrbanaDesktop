@@ -30,10 +30,10 @@
         {
             lblNomeProduto = new Label();
             gbGerenciarProduto = new GroupBox();
+            txtPesquisa = new TextBox();
             btnDeletar = new Button();
             btnAtualizar = new Button();
             btnCadastrar = new Button();
-            btnPesquisar = new Button();
             dgGerenciarProdutos = new DataGridView();
             mskDataPlantio = new MaskedTextBox();
             txtQuantidade = new TextBox();
@@ -56,10 +56,10 @@
             // 
             // gbGerenciarProduto
             // 
+            gbGerenciarProduto.Controls.Add(txtPesquisa);
             gbGerenciarProduto.Controls.Add(btnDeletar);
             gbGerenciarProduto.Controls.Add(btnAtualizar);
             gbGerenciarProduto.Controls.Add(btnCadastrar);
-            gbGerenciarProduto.Controls.Add(btnPesquisar);
             gbGerenciarProduto.Controls.Add(dgGerenciarProdutos);
             gbGerenciarProduto.Controls.Add(mskDataPlantio);
             gbGerenciarProduto.Controls.Add(txtQuantidade);
@@ -69,17 +69,27 @@
             gbGerenciarProduto.Controls.Add(lblNomeProduto);
             gbGerenciarProduto.Location = new Point(12, 12);
             gbGerenciarProduto.Name = "gbGerenciarProduto";
-            gbGerenciarProduto.Size = new Size(776, 426);
+            gbGerenciarProduto.Size = new Size(631, 426);
             gbGerenciarProduto.TabIndex = 1;
             gbGerenciarProduto.TabStop = false;
+            // 
+            // txtPesquisa
+            // 
+            txtPesquisa.Font = new Font("Arial", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtPesquisa.Location = new Point(6, 350);
+            txtPesquisa.Name = "txtPesquisa";
+            txtPesquisa.PlaceholderText = "Pesquisa";
+            txtPesquisa.Size = new Size(466, 22);
+            txtPesquisa.TabIndex = 7;
+            txtPesquisa.TextChanged += txtPesquisa_TextChanged;
             // 
             // btnDeletar
             // 
             btnDeletar.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnDeletar.Location = new Point(333, 379);
+            btnDeletar.Location = new Point(300, 392);
             btnDeletar.Name = "btnDeletar";
             btnDeletar.Size = new Size(139, 28);
-            btnDeletar.TabIndex = 10;
+            btnDeletar.TabIndex = 6;
             btnDeletar.Text = "Deletar";
             btnDeletar.UseVisualStyleBackColor = true;
             btnDeletar.Click += btnDeletar_Click;
@@ -87,10 +97,10 @@
             // btnAtualizar
             // 
             btnAtualizar.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnAtualizar.Location = new Point(184, 379);
+            btnAtualizar.Location = new Point(151, 392);
             btnAtualizar.Name = "btnAtualizar";
             btnAtualizar.Size = new Size(143, 28);
-            btnAtualizar.TabIndex = 9;
+            btnAtualizar.TabIndex = 5;
             btnAtualizar.Text = "Atualizar";
             btnAtualizar.UseVisualStyleBackColor = true;
             btnAtualizar.Click += btnAtualizar_Click;
@@ -98,37 +108,27 @@
             // btnCadastrar
             // 
             btnCadastrar.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnCadastrar.Location = new Point(39, 379);
+            btnCadastrar.Location = new Point(6, 392);
             btnCadastrar.Name = "btnCadastrar";
             btnCadastrar.Size = new Size(139, 28);
-            btnCadastrar.TabIndex = 8;
+            btnCadastrar.TabIndex = 4;
             btnCadastrar.Text = "Cadastrar";
             btnCadastrar.UseVisualStyleBackColor = true;
             btnCadastrar.Click += btnCadastrar_Click;
-            // 
-            // btnPesquisar
-            // 
-            btnPesquisar.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnPesquisar.Location = new Point(623, 8);
-            btnPesquisar.Name = "btnPesquisar";
-            btnPesquisar.Size = new Size(147, 35);
-            btnPesquisar.TabIndex = 7;
-            btnPesquisar.Text = "Pesquisar";
-            btnPesquisar.UseVisualStyleBackColor = true;
-            btnPesquisar.Click += btnPesquisar_Click;
             // 
             // dgGerenciarProdutos
             // 
             dgGerenciarProdutos.AllowUserToAddRows = false;
             dgGerenciarProdutos.AllowUserToDeleteRows = false;
+            dgGerenciarProdutos.AllowUserToResizeRows = false;
             dgGerenciarProdutos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgGerenciarProdutos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgGerenciarProdutos.Location = new Point(6, 102);
             dgGerenciarProdutos.Name = "dgGerenciarProdutos";
             dgGerenciarProdutos.ReadOnly = true;
             dgGerenciarProdutos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgGerenciarProdutos.Size = new Size(764, 263);
-            dgGerenciarProdutos.TabIndex = 6;
+            dgGerenciarProdutos.Size = new Size(619, 242);
+            dgGerenciarProdutos.TabIndex = 0;
             // 
             // mskDataPlantio
             // 
@@ -137,7 +137,7 @@
             mskDataPlantio.Mask = "00/00/0000";
             mskDataPlantio.Name = "mskDataPlantio";
             mskDataPlantio.Size = new Size(88, 26);
-            mskDataPlantio.TabIndex = 5;
+            mskDataPlantio.TabIndex = 3;
             mskDataPlantio.ValidatingType = typeof(DateTime);
             // 
             // txtQuantidade
@@ -146,7 +146,7 @@
             txtQuantidade.Location = new Point(114, 41);
             txtQuantidade.Name = "txtQuantidade";
             txtQuantidade.Size = new Size(100, 26);
-            txtQuantidade.TabIndex = 4;
+            txtQuantidade.TabIndex = 2;
             // 
             // lblDataPlantio
             // 
@@ -173,20 +173,20 @@
             txtNomeProduto.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtNomeProduto.Location = new Point(114, 12);
             txtNomeProduto.Name = "txtNomeProduto";
-            txtNomeProduto.Size = new Size(486, 26);
+            txtNomeProduto.Size = new Size(358, 26);
             txtNomeProduto.TabIndex = 1;
             // 
             // frmGerenciarProduto
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(655, 450);
             Controls.Add(gbGerenciarProduto);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "frmGerenciarProduto";
             ShowIcon = false;
-            StartPosition = FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.CenterParent;
             Text = "frmGerenciarProduto";
             gbGerenciarProduto.ResumeLayout(false);
             gbGerenciarProduto.PerformLayout();
@@ -206,7 +206,7 @@
         private Button btnDeletar;
         private Button btnAtualizar;
         private Button btnCadastrar;
-        private Button btnPesquisar;
         private DataGridView dgGerenciarProdutos;
+        private TextBox txtPesquisa;
     }
 }

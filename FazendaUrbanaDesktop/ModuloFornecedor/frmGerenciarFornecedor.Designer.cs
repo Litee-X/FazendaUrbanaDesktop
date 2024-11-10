@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             gbGerenciarFornecedor = new GroupBox();
+            txtPesquisa = new TextBox();
             dgGerenciarFornecedor = new DataGridView();
             mskCnpj = new MaskedTextBox();
             txtEndereco = new TextBox();
@@ -41,13 +42,13 @@
             btnDeletar = new Button();
             btnAtualizar = new Button();
             btnCadastrar = new Button();
-            btnPesquisar = new Button();
             gbGerenciarFornecedor.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgGerenciarFornecedor).BeginInit();
             SuspendLayout();
             // 
             // gbGerenciarFornecedor
             // 
+            gbGerenciarFornecedor.Controls.Add(txtPesquisa);
             gbGerenciarFornecedor.Controls.Add(dgGerenciarFornecedor);
             gbGerenciarFornecedor.Controls.Add(mskCnpj);
             gbGerenciarFornecedor.Controls.Add(txtEndereco);
@@ -60,12 +61,21 @@
             gbGerenciarFornecedor.Controls.Add(btnDeletar);
             gbGerenciarFornecedor.Controls.Add(btnAtualizar);
             gbGerenciarFornecedor.Controls.Add(btnCadastrar);
-            gbGerenciarFornecedor.Controls.Add(btnPesquisar);
             gbGerenciarFornecedor.Location = new Point(12, 12);
             gbGerenciarFornecedor.Name = "gbGerenciarFornecedor";
             gbGerenciarFornecedor.Size = new Size(776, 426);
             gbGerenciarFornecedor.TabIndex = 0;
             gbGerenciarFornecedor.TabStop = false;
+            // 
+            // txtPesquisa
+            // 
+            txtPesquisa.Font = new Font("Arial", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtPesquisa.Location = new Point(6, 330);
+            txtPesquisa.Name = "txtPesquisa";
+            txtPesquisa.PlaceholderText = "Pesquisa";
+            txtPesquisa.Size = new Size(588, 22);
+            txtPesquisa.TabIndex = 13;
+            txtPesquisa.TextChanged += txtPesquisa_TextChanged;
             // 
             // dgGerenciarFornecedor
             // 
@@ -74,7 +84,7 @@
             dgGerenciarFornecedor.AllowUserToResizeRows = false;
             dgGerenciarFornecedor.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgGerenciarFornecedor.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgGerenciarFornecedor.Location = new Point(6, 170);
+            dgGerenciarFornecedor.Location = new Point(6, 150);
             dgGerenciarFornecedor.MultiSelect = false;
             dgGerenciarFornecedor.Name = "dgGerenciarFornecedor";
             dgGerenciarFornecedor.ReadOnly = true;
@@ -158,7 +168,7 @@
             // btnDeletar
             // 
             btnDeletar.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnDeletar.Location = new Point(286, 375);
+            btnDeletar.Location = new Point(270, 393);
             btnDeletar.Name = "btnDeletar";
             btnDeletar.Size = new Size(126, 27);
             btnDeletar.TabIndex = 7;
@@ -169,7 +179,7 @@
             // btnAtualizar
             // 
             btnAtualizar.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnAtualizar.Location = new Point(154, 375);
+            btnAtualizar.Location = new Point(138, 393);
             btnAtualizar.Name = "btnAtualizar";
             btnAtualizar.Size = new Size(126, 27);
             btnAtualizar.TabIndex = 6;
@@ -180,24 +190,13 @@
             // btnCadastrar
             // 
             btnCadastrar.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnCadastrar.Location = new Point(22, 375);
+            btnCadastrar.Location = new Point(6, 393);
             btnCadastrar.Name = "btnCadastrar";
             btnCadastrar.Size = new Size(126, 27);
             btnCadastrar.TabIndex = 5;
             btnCadastrar.Text = "Cadastrar";
             btnCadastrar.UseVisualStyleBackColor = true;
             btnCadastrar.Click += btnCadastrar_Click;
-            // 
-            // btnPesquisar
-            // 
-            btnPesquisar.Font = new Font("Arial", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnPesquisar.Location = new Point(626, 21);
-            btnPesquisar.Name = "btnPesquisar";
-            btnPesquisar.Size = new Size(126, 27);
-            btnPesquisar.TabIndex = 8;
-            btnPesquisar.Text = "Pesquisar";
-            btnPesquisar.UseVisualStyleBackColor = true;
-            btnPesquisar.Click += btnPesquisar_Click;
             // 
             // frmGerenciarFornecedor
             // 
@@ -208,7 +207,7 @@
             Name = "frmGerenciarFornecedor";
             ShowIcon = false;
             StartPosition = FormStartPosition.CenterParent;
-            Text = "frmGerenciarFornecedor";
+            Text = "GerenciarFornecedor";
             gbGerenciarFornecedor.ResumeLayout(false);
             gbGerenciarFornecedor.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgGerenciarFornecedor).EndInit();
@@ -229,7 +228,7 @@
         private Button btnDeletar;
         private Button btnAtualizar;
         private Button btnCadastrar;
-        private Button btnPesquisar;
         private DataGridView dgGerenciarFornecedor;
+        private TextBox txtPesquisa;
     }
 }
