@@ -27,18 +27,21 @@ namespace FazendaUrbanaDesktop.ModuloUsuario
             }
         }
 
-        public bool AtualizarUsuario(ConexaoBanco factory, string login, string senhaHash, string email, string endereco)
+        public bool AtualizarUsuario(ConexaoBanco factory, string nome, string senhaHash, string email, string endereco, string cpfOriginal)
         {
             using (SqlConnection conn = factory.ObterConexao())
             {
                 conn.Open();
-                string query = "UPDATE Usuario SET senha = @senha, email = @email, endereco = @endereco WHERE login = @login";
+                string query = "UPDATE Usuario SET login = @nome, senha = @senha, email = @email, endereco = @endereco WHERE cpf = @cpf";
+
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@login", login);
+                    cmd.Parameters.AddWithValue("@nome", nome);
                     cmd.Parameters.AddWithValue("@senha", senhaHash);
                     cmd.Parameters.AddWithValue("@email", email);
                     cmd.Parameters.AddWithValue("@endereco", endereco);
+                    cmd.Parameters.AddWithValue("@cpf", cpfOriginal); // Mantendo o CPF original como chave primária
+
                     int rowsAffected = cmd.ExecuteNonQuery();
                     return rowsAffected > 0;
                 }

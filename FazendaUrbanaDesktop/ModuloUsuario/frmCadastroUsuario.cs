@@ -73,10 +73,11 @@ namespace FazendaUrbanaDesktop.ModuloUsuario
                 if (dgCadastrarUsuario.SelectedRows.Count > 0)
                 {
                     var linha = dgCadastrarUsuario.SelectedRows[0];
-                    string nome = linha.Cells["login"].Value.ToString();
+                    string cpfOriginal = linha.Cells["cpf"].Value.ToString(); // Usando CPF como chave primária
 
                     // Obtem os valores dos campos; se vazio, mantém o valor original do DataGridView
-                    string cpf = string.IsNullOrWhiteSpace(mskCpf.Text) ? linha.Cells["cpf"].Value.ToString() : mskCpf.Text;
+                    string nome = string.IsNullOrWhiteSpace(txtNome.Text) ? linha.Cells["login"].Value.ToString() : txtNome.Text;
+                    string cpf = string.IsNullOrWhiteSpace(mskCpf.Text) ? cpfOriginal : mskCpf.Text;
                     string email = string.IsNullOrWhiteSpace(txtEmail.Text) ? linha.Cells["email"].Value.ToString() : txtEmail.Text;
                     string endereco = string.IsNullOrWhiteSpace(txtEndereco.Text) ? linha.Cells["endereco"].Value.ToString() : txtEndereco.Text;
 
@@ -87,11 +88,11 @@ namespace FazendaUrbanaDesktop.ModuloUsuario
                     string senhaHash = _passwordHasher.HashPassword(cpfSemMascara);
 
                     var gerenciarUsuario = new GerenciarUsuario();
-                    if (gerenciarUsuario.AtualizarUsuario(_factory, nome, senhaHash, email, endereco))
+                    if (gerenciarUsuario.AtualizarUsuario(_factory, nome, senhaHash, email, endereco, cpfOriginal))
                     {
                         MessageBox.Show("Usuário atualizado com sucesso!");
                         LimparCampos();
-                        CarregarUsuarios();
+                        CarregarUsuarios(); // Recarrega a lista de usuários após a atualização
                     }
                     else
                     {
